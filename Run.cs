@@ -119,7 +119,7 @@ namespace CPF_experiment
             heuristics = new List<HeuristicCalculator>();
             var sic = new SumIndividualCosts();
             heuristics.Add(sic);
-            var astar = new ClassicAStar(sic);
+            var astar = new ClassicAStar(sic, false, false, 2);   //withBias
             var cbs = new CBS_LocalConflicts(astar, astar, -1);
             var astar_with_od = new AStarWithOD(sic);
             var epea = new AStarWithPartialExpansion(sic);
@@ -906,11 +906,13 @@ namespace CPF_experiment
                     }
 
                     Console.WriteLine();
+                    printLinkedList(solvers[i].GetPlan().GetLocations());
+                    Console.WriteLine();
                     if (solvers[0] is CBS_GlobalConflicts)
                     {
                         checkValidBiasPlan(solvers[i].GetPlan().GetLocations(), ((CBS_GlobalConflicts)solvers[0]).conflictRange);
                     }
-                    printLinkedList(solvers[i].GetPlan().GetLocations());
+                    
                     bool success = true;
 
                     if (solverSolutionCost >= 0) // Solved successfully
@@ -1815,6 +1817,7 @@ namespace CPF_experiment
             LinkedListNode<List<Move>> biasnode;
             List<Move> biasMove;
             List<Move> cur = node.Value;
+            bool valid = true;
             for (int i = 0; i < plan.Count; i++)
             {
 
@@ -1836,9 +1839,8 @@ namespace CPF_experiment
                             Move agent2 = biasMove[bMove];
                             if (agent1.IsColliding(agent2))
                             {
-                                Console.WriteLine("Agent " + aMove + " colliding Agent " + bMove + " at time " + i + " bias " + j);
-                                Console.WriteLine("Not a valid bias plan!");
-                                return false;
+                                Console.WriteLine("Agents " + aMove + " and " + bMove + " collides at time " + i + " bias " + j);
+                                valid = false;
                             }
                         }
                     }
@@ -1847,8 +1849,11 @@ namespace CPF_experiment
                 if (node != null)
                     cur  = node.Value;
             }
-            Console.WriteLine("A valid bias plan!");
-            return true;
+            if(valid)
+                Console.WriteLine("A valid bias plan!");
+            else
+                Console.WriteLine("Not a valid bias plan!");
+            return valid;
         }
 
         private bool checkValidExecution(LinkedList<List<Move>> originalLinkedList, LinkedList<List<Move>> exePlan)
@@ -1856,6 +1861,7 @@ namespace CPF_experiment
             LinkedListNode<List<Move>> node = exePlan.First;
             List<Move> pre;
             List<Move> cur;
+            bool valid = true;
             for (int i = 1; i < exePlan.Count; i++)
             {
                 pre  = node.Value;
@@ -1865,17 +1871,15 @@ namespace CPF_experiment
                 {
                     if (!isFollowingMove(pre[aMove], cur[aMove]))
                     {
-                        Console.WriteLine("Not a valid execution!");
                         Console.WriteLine("Agent: " + aMove + ", at time " + (i-1) + " at " + pre[aMove] + "and at time " + i + " at " + cur[aMove]);
-                        return false;
+                        valid = false;
                     }
                     for(int bMove = aMove + 1; bMove < cur.Count; bMove++)
                     {
                         if (pre[aMove].IsColliding(pre[bMove]))
                         {
-                            Console.WriteLine("Not a valid execution!");
-                            Console.WriteLine("Agent: " + aMove + " is colliding Agent " + bMove + " at time " + i);
-                            return false;
+                            Console.WriteLine("Agents: " + aMove + " and " + bMove + " collides at time " + i);
+                            valid = false;
                         }
                     }
                 }
@@ -1888,14 +1892,16 @@ namespace CPF_experiment
                     if (sOriginal.x != sNew.x || sOriginal.y != sNew.y ||
                         gOriginal.x != gNew.x || gOriginal.y != gNew.y)
                     {
-                        Console.WriteLine("Not a valid execution!");
                         Console.WriteLine("wrong start or goal");
-                        return false;
+                        valid = false;
                     }
                 }
             }
-            Console.WriteLine("A valid execution!");
-            return true;
+            if(valid)
+                Console.WriteLine("A valid execution!");
+            else
+                Console.WriteLine("Not a valid execution!");
+            return valid;
         }
 
         private bool isFollowingMove(Move a, Move b)

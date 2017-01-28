@@ -28,17 +28,18 @@ namespace CPF_experiment
             Move move;
             int agentNum;
 
+            int minTime = Math.Min(conflict.timeStepAgentA, conflict.timeStepAgentB);
             if (agentA)
             {
                 move = conflict.agentAmove;
                 agentNum = instance.m_vAgents[conflict.agentAIndex].agent.agentNum;
-                this.move = new TimedMove(move, conflict.timeStepAgentA);
+                this.move = new TimedMove(move, minTime);
             }
             else
             {
                 move = conflict.agentBmove;
                 agentNum = instance.m_vAgents[conflict.agentBIndex].agent.agentNum;
-                this.move = new TimedMove(move, conflict.timeStepAgentB);
+                this.move = new TimedMove(move, minTime);
             }
 
             this.agentNum = (byte)agentNum;

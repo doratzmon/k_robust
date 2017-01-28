@@ -240,7 +240,7 @@ namespace CPF_experiment
         /// <param name="agentState"></param>
         /// <returns></returns>
         public SinglePlan GetSingleAgentOptimalPlan(AgentState agentState,
-                                                    out Dictionary<int, int> conflictCountPerAgent, out Dictionary<int, List<int>> conflictTimesPerAgent, out Dictionary<int, List<int>> conflictTimesBiasPerAgent)
+                                                    out Dictionary<int, int> conflictCountPerAgent, out Dictionary<int, List<int>> conflictTimesPerAgent, out Dictionary<int, List<int>> conflictTimesBiasPerAgent, int conflictRange = 0)
         {
             LinkedList<Move> moves = new LinkedList<Move>();
             int agentNum = agentState.agent.agentNum;
@@ -261,7 +261,7 @@ namespace CPF_experiment
                 moves.AddLast(current);
 
                 // Count conflicts:
-                current.UpdateConflictCounts(CAT, conflictCounts, conflictTimes, conflictTimesBias);
+                current.UpdateConflictCounts(CAT, conflictCounts, conflictTimes, conflictTimesBias, conflictRange);
 
                 if (agentState.agent.Goal.Equals(current))
                     break;

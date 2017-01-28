@@ -55,6 +55,7 @@ namespace CPF_experiment
         protected List<CbsConflict> mstarBackPropagationConflictList;
         protected Run runner;
         protected Plan solution;
+        protected int conflictRange;
         /// <summary>
         /// For CBS/A*
         /// </summary>
@@ -63,7 +64,7 @@ namespace CPF_experiment
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ClassicAStar(HeuristicCalculator heuristic = null, bool mStar = false, bool mStarShuffle = false)
+        public ClassicAStar(HeuristicCalculator heuristic = null, bool mStar = false, bool mStarShuffle = false, int conflictRange = 0)
         {
             this.closedList = new Dictionary<WorldState, WorldState>();
             this.openList = new OpenList(this);
@@ -74,6 +75,7 @@ namespace CPF_experiment
 
             this.mstar = mStar;
             this.doMstarShuffle = mStarShuffle;
+            this.conflictRange = conflictRange;
         }
 
         //public virtual void Setup(ProblemInstance problemInstance, int minDepth, Run runner)
@@ -150,7 +152,7 @@ namespace CPF_experiment
         /// <returns>The root of the search tree</returns>
         protected virtual WorldState CreateSearchRoot(int minDepth = -1, int minCost = -1)
         {
-            return new WorldState(this.instance.m_vAgents, minDepth, minCost);
+            return new WorldState(this.instance.m_vAgents, minDepth, minCost, conflictRange);
         }
 
         /// <summary>
@@ -1000,7 +1002,7 @@ namespace CPF_experiment
                         currentNode.conflictTimesBias[kvp.Key] = new List<int>(kvp.Value);
 
                     currentNode.UpdateConflictCounts(
-                        ((IReadOnlyDictionary<TimedMove, List<int>>)instance.parameters[IndependenceDetection.CONFLICT_AVOIDANCE]));
+                        ((IReadOnlyDictionary<TimedMove, List<int>>)instance.parameters[IndependenceDetection.CONFLICT_AVOIDANCE]), conflictRange);
                     // We're counting conflicts along the entire path, so the parent's conflicts count
                     // is added to the child's.
 
@@ -1022,7 +1024,7 @@ namespace CPF_experiment
                         currentNode.conflictTimesBias[kvp.Key] = new List<int>(kvp.Value);
 
                     currentNode.UpdateConflictCounts(
-                        ((IReadOnlyDictionary<TimedMove, List<int>>)instance.parameters[CBS_LocalConflicts.CAT]));
+                        ((IReadOnlyDictionary<TimedMove, List<int>>)instance.parameters[CBS_LocalConflicts.CAT]), conflictRange);
 
                     // Count one for every agent the path conflicts with any number of times:
                     currentNode.cbsInternalConflictsCount = currentNode.cbsInternalConflicts.Count;

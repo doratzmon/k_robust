@@ -1024,52 +1024,56 @@ namespace CPF_experiment
             }
 
             // Generate left child:
-            child = ConstraintExpand(node, true, out closedListHitChildCost);
-            if (child != null)
+            if (node.conflict.timeStepAgentA != 0)
             {
-                if (child == node) // Expansion deferred
-                    reinsertParent = true;
-                else // New child
+                child = ConstraintExpand(node, true, out closedListHitChildCost);
+                if (child != null)
                 {
-                    // First fit adoption: Greedily adopt the first child that's better than the parent
-                    if (adopt &&
-                        AdoptConditionally(adoptBy, child, adoptByH))
-                        return true;
-                    children.Add(child);
-                    leftSameCost = child.totalCost == node.totalCost;
+                    if (child == node) // Expansion deferred
+                        reinsertParent = true;
+                    else // New child
+                    {
+                        // First fit adoption: Greedily adopt the first child that's better than the parent
+                        if (adopt &&
+                            AdoptConditionally(adoptBy, child, adoptByH))
+                            return true;
+                        children.Add(child);
+                        leftSameCost = child.totalCost == node.totalCost;
+                    }
                 }
-            }
-            else  // A timeout occured, or the child was already in the closed list.
-            {
-                if (closedListHitChildCost != -1)
-                    leftSameCost = closedListHitChildCost == node.totalCost;
-            }
+                else  // A timeout occured, or the child was already in the closed list.
+                {
+                    if (closedListHitChildCost != -1)
+                        leftSameCost = closedListHitChildCost == node.totalCost;
+                }
 
-            if (runner.ElapsedMilliseconds() > Constants.MAX_TIME)
-                return false;
-
+                if (runner.ElapsedMilliseconds() > Constants.MAX_TIME)
+                    return false;
+            }
             // Generate right child:
-            child = ConstraintExpand(node, false, out closedListHitChildCost);
-            if (child != null)
+            if (node.conflict.timeStepAgentB != 0)
             {
-                if (child == node) // Expansion deferred
-                    reinsertParent = true;
-                else // New child
+                child = ConstraintExpand(node, false, out closedListHitChildCost);
+                if (child != null)
                 {
-                    // First fit adoption: Greedily adopt the first child that's better than the parent
-                    if (adopt &&
-                        AdoptConditionally(adoptBy, child, adoptByH))
-                        return true;
-                    children.Add(child);
-                    rightSameCost = child.totalCost == node.totalCost;
+                    if (child == node) // Expansion deferred
+                        reinsertParent = true;
+                    else // New child
+                    {
+                        // First fit adoption: Greedily adopt the first child that's better than the parent
+                        if (adopt &&
+                            AdoptConditionally(adoptBy, child, adoptByH))
+                            return true;
+                        children.Add(child);
+                        rightSameCost = child.totalCost == node.totalCost;
+                    }
+                }
+                else  // A timeout occured, or the child was already in the closed list.
+                {
+                    if (closedListHitChildCost != -1)
+                        rightSameCost = closedListHitChildCost == node.totalCost;
                 }
             }
-            else  // A timeout occured, or the child was already in the closed list.
-            {
-                if (closedListHitChildCost != -1)
-                    rightSameCost = closedListHitChildCost == node.totalCost;
-            }
-
             if (node.agentAExpansion == CbsNode.ExpansionState.DEFERRED || node.agentBExpansion == CbsNode.ExpansionState.DEFERRED)
                 this.semiCardinalConflictSplits++; // Count only on the first expansion of the node. On the second expansion no count will be incremented.
             else

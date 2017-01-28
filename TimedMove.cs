@@ -316,7 +316,8 @@ namespace CPF_experiment
                         conflictTimes[agentNum] = new List<int>(4);
                     if (conflictTimesBias.ContainsKey(agentNum) == false)
                         conflictTimesBias[agentNum] = new List<int>(4);
-                    if (!conflictTimes[agentNum].Contains(saveTime))
+                    if (!conflictTimes[agentNum].Contains(saveTime)  ||
+                        (conflictTimes[agentNum].Contains(saveTime) && !conflictTimesBias[agentNum].Contains(this.time - saveTime)))
                     {
                         conflictTimes[agentNum].Add(saveTime);
                         conflictTimesBias[agentNum].Add(this.time - saveTime);

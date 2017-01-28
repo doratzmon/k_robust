@@ -291,7 +291,7 @@ namespace CPF_experiment
                     allSingleAgentPlans[i].agentNum = problem.m_vAgents[this.agentsGroupAssignment[i]].agent.agentNum; // Use the group's representative
                     SinglePlan optimalPlan = problem.GetSingleAgentOptimalPlan(
                                     problem.m_vAgents[i],
-                                    out this.conflictCountsPerAgent[i], out this.conflictTimesPerAgent[i], out this.conflictTimesBiasPerAgent[i]);
+                                    out this.conflictCountsPerAgent[i], out this.conflictTimesPerAgent[i], out this.conflictTimesBiasPerAgent[i], cbs.conflictRange);
                     allSingleAgentPlans[i].ContinueWith(optimalPlan);
                     allSingleAgentCosts[i] = problem.m_vAgents[i].g + problem.GetSingleAgentOptimalCost(problem.m_vAgents[i]);
                     totalCost += (ushort)allSingleAgentCosts[i];
@@ -305,7 +305,6 @@ namespace CPF_experiment
                     if (!success) // Usually means a timeout occured.
                         break;
                 }
-
                 // Add plan to the internalCAT
                 foreach (AgentState agentState in subGroup)
                 {
@@ -322,7 +321,9 @@ namespace CPF_experiment
             if (!success)
                 return false;
             printLinkedList(singleAgentPathsToList(allSingleAgentPlans));
-            printConflicts();
+            
+            printConflicts(allSingleAgentPlans);
+            Console.WriteLine("");
             // Update conflict counts: All agents but the last saw an incomplete CAT. Update counts backwards.
             for (int i = this.conflictCountsPerAgent.Length - 1; i >= 0; i--)
             {
@@ -356,7 +357,7 @@ namespace CPF_experiment
                     }
                 }
             }
-            printConflicts();
+            printConflicts(allSingleAgentPlans);
             this.CountConflicts();
 
             this.CalcMinOpsToSolve();
@@ -366,7 +367,12 @@ namespace CPF_experiment
             return true;
         }
 
-        private void printConflicts()
+        public int getConflictRange()
+        {
+            return cbs.conflictRange;
+        }
+
+        private void printConflicts(SinglePlan[] allSingleAgentPlans)
         {
             for (int agentDictionaryIndex = 0; agentDictionaryIndex < conflictCountsPerAgent.Count(); agentDictionaryIndex ++ )
             {
@@ -381,7 +387,12 @@ namespace CPF_experiment
                     List<int> agentTimesBiasDictionaryList  = agentTimesBiasDictionary[key];
                     for(int i = 0; i < agentTimesDictionaryList.Count; i++)
                     {
-                        Console.WriteLine("Agent " + agentDictionaryIndex + " Collindeing Agent " + key + " At Time " + agentTimesDictionaryList[i] + " Bias " + agentTimesBiasDictionaryList[i]);
+                        Move move;
+                        if (agentTimesDictionaryList[i] >= allSingleAgentPlans[agentDictionaryIndex].locationAtTimes.Count)
+                            move = allSingleAgentPlans[agentDictionaryIndex].locationAtTimes[allSingleAgentPlans[agentDictionaryIndex].locationAtTimes.Count - 1];
+                        else
+                            move = allSingleAgentPlans[agentDictionaryIndex].locationAtTimes[agentTimesDictionaryList[i]];
+                        Console.WriteLine("Agent " + agentDictionaryIndex + " Collindeing Agent " + key + " At Time " + agentTimesDictionaryList[i] + " Bias " + agentTimesBiasDictionaryList[i] + " Location " + move);
                     }
                 }
             }
@@ -697,8 +708,16 @@ namespace CPF_experiment
                     if (perAgent.ContainsKey(agentNum))
                     {
                         this.conflictCountsPerAgent[i][representativeAgentNum] = perAgent[agentNum];
-                        this.conflictTimesPerAgent[i][representativeAgentNum] = conflictTimes[agentNum];
-                        this.conflictTimesBiasPerAgent[i][representativeAgentNum] = conflictTimesBias[agentNum];
+                        this.conflictTimesPerAgent[i][representativeAgentNum] = new List<int>();
+                        this.conflictTimesBiasPerAgent[i][representativeAgentNum] = new List<int>();
+
+                        for (int time = 0; time < conflictTimes[agentNum].Count; time++)
+                        {
+                            this.conflictTimesPerAgent[i][representativeAgentNum].Add(conflictTimes[agentNum][time] + conflictTimesBias[agentNum][time]);
+                            //this.conflictTimesPerAgent[i][representativeAgentNum][time] += conflictTimesBias[agentNum][time];
+                            this.conflictTimesBiasPerAgent[i][representativeAgentNum].Add(conflictTimesBias[agentNum][time] * -1);
+                            //this.conflictTimesBiasPerAgent[i][representativeAgentNum][time] *= -1;
+                        }
                     }
                     else
                     {
@@ -1929,7 +1948,7 @@ namespace CPF_experiment
             {
                 if (other_constraints.Contains(constraint) == false)
                     return false;
-                current = current.prev;
+                //current = current.prev;    dor comment
             }
             return constraints.Count == other_constraints.Count;
         }
@@ -2055,12 +2074,18 @@ namespace CPF_experiment
                     current.prev.conflict != null && // Can only happen for temporary lookahead nodes the were created and then later the parent adopted a goal node
                     this.agentsGroupAssignment[current.prev.conflict.agentAIndex] !=
                     this.agentsGroupAssignment[current.prev.conflict.agentBIndex]) // Ignore constraints that deal with conflicts between
-                                                                                   // agents that were later merged. They're irrelevant
-                                                                                   // since merging fixes all conflicts between merged agents.
-                                                                                   // Nodes that only differ in such irrelevant conflicts will have the same single agent paths.
-                                                                                   // Dereferencing current.prev is safe because current isn't the root.
-                                                                                   // Also, merging creates a non-root node with a null constraint, and this helps avoid adding the null to the answer.
-                    constraints.Add(current.constraint);
+                    // agents that were later merged. They're irrelevant
+                    // since merging fixes all conflicts between merged agents.
+                    // Nodes that only differ in such irrelevant conflicts will have the same single agent paths.
+                    // Dereferencing current.prev is safe because current isn't the root.
+                    // Also, merging creates a non-root node with a null constraint, and this helps avoid adding the null to the answer.
+                    for (int i = 0; i <= cbs.conflictRange; i++)
+                    {
+                        CbsConstraint currentConstraint = current.constraint;
+                        TimedMove     currentMove       = current.constraint.move;
+                        CbsConstraint newConstraint = new CbsConstraint(currentConstraint.agentNum, currentMove.x, currentMove.y, currentMove.direction, currentMove.time + i);
+                        constraints.Add(newConstraint);
+                    }
                 current = current.prev;
             }
             return constraints;

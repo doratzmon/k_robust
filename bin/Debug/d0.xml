@@ -234,7 +234,7 @@
             An array of dictionaries that map constrained timesteps to must constraints.
             </summary>
         </member>
-        <member name="M:CPF_experiment.ClassicAStar.#ctor(CPF_experiment.HeuristicCalculator,System.Boolean,System.Boolean)">
+        <member name="M:CPF_experiment.ClassicAStar.#ctor(CPF_experiment.HeuristicCalculator,System.Boolean,System.Boolean,System.Int32)">
             <summary>
             Default constructor.
             </summary>
@@ -1923,7 +1923,7 @@
             <param name="agent"></param>
             <returns></returns>
         </member>
-        <member name="M:CPF_experiment.ProblemInstance.GetSingleAgentOptimalPlan(CPF_experiment.AgentState,System.Collections.Generic.Dictionary{System.Int32,System.Int32}@,System.Collections.Generic.Dictionary{System.Int32,System.Collections.Generic.List{System.Int32}}@,System.Collections.Generic.Dictionary{System.Int32,System.Collections.Generic.List{System.Int32}}@)">
+        <member name="M:CPF_experiment.ProblemInstance.GetSingleAgentOptimalPlan(CPF_experiment.AgentState,System.Collections.Generic.Dictionary{System.Int32,System.Int32}@,System.Collections.Generic.Dictionary{System.Int32,System.Collections.Generic.List{System.Int32}}@,System.Collections.Generic.Dictionary{System.Int32,System.Collections.Generic.List{System.Int32}}@,System.Int32)">
             <summary>
             The returned plan wasn't constructed considering a CAT, so it's possible there's an alternative plan with the same cost and less collisions.
             </summary>
@@ -2610,7 +2610,7 @@
             Disjoint sets of agent indices, since only internal agents are considered.
             </summary>
         </member>
-        <member name="M:CPF_experiment.WorldState.#ctor(CPF_experiment.AgentState[],System.Int32,System.Int32)">
+        <member name="M:CPF_experiment.WorldState.#ctor(CPF_experiment.AgentState[],System.Int32,System.Int32,System.Int32)">
             <summary>
             Create a state with the given state for every agent.
             </summary>
@@ -2731,7 +2731,7 @@
             <param name="obj"></param>
             <returns></returns>
         </member>
-        <member name="M:CPF_experiment.WorldState.UpdateConflictCounts(System.Collections.Generic.IReadOnlyDictionary{CPF_experiment.TimedMove,System.Collections.Generic.List{System.Int32}})">
+        <member name="M:CPF_experiment.WorldState.UpdateConflictCounts(System.Collections.Generic.IReadOnlyDictionary{CPF_experiment.TimedMove,System.Collections.Generic.List{System.Int32}},System.Int32)">
             <summary>
             Counts the number of times this node collides with each agent move in the conflict avoidance table.
             </summary>
@@ -2862,7 +2862,7 @@
             <param name="other"></param>
             <returns></returns>
         </member>
-        <member name="M:CPF_experiment.WorldStateWithOD.UpdateConflictCounts(System.Collections.Generic.IReadOnlyDictionary{CPF_experiment.TimedMove,System.Collections.Generic.List{System.Int32}})">
+        <member name="M:CPF_experiment.WorldStateWithOD.UpdateConflictCounts(System.Collections.Generic.IReadOnlyDictionary{CPF_experiment.TimedMove,System.Collections.Generic.List{System.Int32}},System.Int32)">
             <summary>
             Counts for last agent to move only, the counts from the previous agents to move are accumulated from the parent node.
             </summary>

@@ -65,12 +65,12 @@ namespace CPF_experiment
         //public ISet<int> currentCollisionSet;
         public ISet<WorldState> backPropagationSet;
         public TimedMove[] plannedMoves;
-
+        public int conflictRange;
         /// <summary>
         /// Create a state with the given state for every agent.
         /// </summary>
         /// <param name="allAgentsState"></param>
-        public WorldState(AgentState[] allAgentsState, int minDepth = -1, int minCost = -1)
+        public WorldState(AgentState[] allAgentsState, int minDepth = -1, int minCost = -1, int conflictRange = 0)
         {
             this.allAgentsState = allAgentsState.ToArray<AgentState>();
             this.makespan = allAgentsState.Max<AgentState>(state => state.lastMove.time); // We expect to only find at most two G values within the agent group
@@ -87,6 +87,7 @@ namespace CPF_experiment
             this.goalSingleCosts = null;
             this.singlePlans = null;
             this.hBonus = 0;
+            this.conflictRange = conflictRange;
         }
 
         /// <summary>
@@ -422,11 +423,11 @@ namespace CPF_experiment
         /// </summary>
         /// <param name="conflictAvoidance"></param>
         /// <returns></returns>
-        public virtual void UpdateConflictCounts(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance)
+        public virtual void UpdateConflictCounts(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance, int conflictRange = 0)
         {
             for (int i = 0; i < this.allAgentsState.Length; i++)
             {
-                this.allAgentsState[i].lastMove.UpdateConflictCounts(conflictAvoidance, this.cbsInternalConflicts, this.conflictTimes, this.conflictTimesBias);
+                this.allAgentsState[i].lastMove.UpdateConflictCounts(conflictAvoidance, this.cbsInternalConflicts, this.conflictTimes, this.conflictTimesBias, conflictRange);
             }
         }
 

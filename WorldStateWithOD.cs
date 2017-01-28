@@ -186,14 +186,14 @@ namespace CPF_experiment
         /// </summary>
         /// <param name="conflictAvoidance"></param>
         /// <returns></returns>
-        public override void UpdateConflictCounts(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance)
+        public override void UpdateConflictCounts(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance, int conflictRange = 0)
         {
             int lastAgentToMove = agentTurn - 1;
             if (agentTurn == 0)
                 lastAgentToMove = allAgentsState.Length - 1;
 
             allAgentsState[lastAgentToMove].lastMove.UpdateConflictCounts(conflictAvoidance,
-                                                                          this.cbsInternalConflicts, this.conflictTimes, this.conflictTimesBias);
+                                                                          this.cbsInternalConflicts, this.conflictTimes, this.conflictTimesBias, conflictRange);
         }
     }
 }
