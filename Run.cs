@@ -119,7 +119,8 @@ namespace CPF_experiment
             heuristics = new List<HeuristicCalculator>();
             var sic = new SumIndividualCosts();
             heuristics.Add(sic);
-            var astar = new ClassicAStar(sic, false, false, 2);   //withBias
+            var astar = new ClassicAStar(sic, false, false, 0);   //withNoBias
+            var astarWithBias = new ClassicAStar(sic, false, false, 2);   //withBias
             var cbs = new CBS_LocalConflicts(astar, astar, -1);
             var astar_with_od = new AStarWithOD(sic);
             var epea = new AStarWithPartialExpansion(sic);
@@ -267,6 +268,8 @@ namespace CPF_experiment
             //soldier: solvers.Add(new CBS_LocalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
             //soldier:     false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1)); // CBS/EPEA* + BP1
             solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0)); // CBS/EPEA* + CARDINAL + BP1
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2)); // CBS/EPEA* + CARDINAL + BP1
 
             //solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
@@ -941,6 +944,7 @@ namespace CPF_experiment
                             solutionCost = solverSolutionCost;
                             firstSolverToSolveIndex = i;
                         }
+                        solutionCost = solverSolutionCost;
                    /*     else // Problem solved before
                         {
                             Debug.Assert(solutionCost == solverSolutionCost,
@@ -972,7 +976,7 @@ namespace CPF_experiment
                     if (toExecute && success)
                     {
                         planningTime = planningStopwatch.Elapsed.TotalMilliseconds;
-                        double[] error_prob = { 0.001, 0.01, 0.1, 0.3/*, 0.5 */};
+                        double[] error_prob = {/* 0.001, 0.01, 0.1, */0.3/*, 0.5 */};
                         //for (int c = 1; c < 101; c *= 10)
                         // for (int c = 20; c < 51; c += 10)
                         //for (int index = 0; index < 10; index += 1)
@@ -983,10 +987,10 @@ namespace CPF_experiment
                             //Plan originalPlan = new Plan(plan);
                             LinkedList<List<Move>> originalLinkedList = copyLinkedList(plan.GetLocations());
                             // Move[] originalStarts = new Move[instance.GetNumOfAgents()];
-                                    Array values = Enum.GetValues(typeof(ExecutePolicy));
+                                 //   Array values = Enum.GetValues(typeof(ExecutePolicy));
                             //  Array values = new ExecutePolicy[2] { ExecutePolicy.Reasonable, ExecutePolicy.Stressful };
                             //  Array values = new ExecutePolicy[1] { ExecutePolicy.Lazy };
-                            //Array values = new ExecutePolicy[1] { ExecutePolicy.MCP };
+                            Array values = new ExecutePolicy[1] { ExecutePolicy.MCP };
                             //Array values = new ExecutePolicy[1] { ExecutePolicy.Reasonable_Repair };
                             //        Array values = new ExecutePolicy[1] { ExecutePolicy.Stressful };
                             //     Array values = new ExecutePolicy[1] { ExecutePolicy.Reasonable };
@@ -1230,7 +1234,7 @@ namespace CPF_experiment
             GC.WaitForPendingFinalizers();
             string solverName = "";
             if (solver.GetType() == typeof(CBS_LocalConflicts) || solver.GetType() == typeof(CBS_GlobalConflicts))
-                solverName = "ICBS";
+                solverName = "ICBS + " + ((CBS_LocalConflicts)solver).conflictRange;
             else
                 solverName = "EPEA*";
             sw.Start();

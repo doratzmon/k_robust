@@ -19,7 +19,7 @@ namespace CPF_experiment
         private static bool onlyReadInstances = false;
         public static double chanceForExecutionMistake = 0.001; //default
         public enum LazyOrEager {Lazy, Eager };
-        public static bool TO_EXECUTE = false;
+        public static bool TO_EXECUTE = true;
 
         /// <summary>
         /// Simplest run possible with a randomly generated problem instance.
@@ -739,7 +739,7 @@ namespace CPF_experiment
 
             Program.onlyReadInstances = false;
 
-            int instances = 1;
+            int instances = 10;
             //int instances = 50;
 
             //bool runGrids = false;
@@ -755,7 +755,7 @@ namespace CPF_experiment
                 //int[] agentListSizes = new int[] { 2, 3, 4 };
 
                 //int[] gridSizes = new int[] { 6, };
-                int[] agentListSizes = new int[] { 10 };
+                int[] agentListSizes = new int[] { 15 };
                 //int[] agentListSizes = new int[] { /*2,*/ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 };
                 // Note that success rate drops almost to zero for EPEA* and A*+OD/SIC on 40 agents.
             

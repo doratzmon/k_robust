@@ -599,8 +599,8 @@ namespace CPF_experiment
             // Enter the generated nodes into the open list
             foreach (var child in finalGeneratedNodes)
             {
-                if (Program.TO_EXECUTE && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
-                    throw new Exception("4");
+               /* if (Program.TO_EXECUTE && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
+                    throw new Exception("4");*/
                 ProcessGeneratedNode(child);
             }
 
@@ -618,8 +618,8 @@ namespace CPF_experiment
         /// </summary>
         protected virtual List<WorldState> ExpandOneAgent(List<WorldState> intermediateNodes, int agentIndex)
         {
-            if (Program.TO_EXECUTE && Run.replanStopwath != null && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
-                throw new Exception("3");
+            /*if (Program.TO_EXECUTE && Run.replanStopwath != null && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
+                throw new Exception("3");*/
             var GeneratedNodes = new List<WorldState>();
             WorldState childNode;
 
@@ -983,8 +983,8 @@ namespace CPF_experiment
         /// <returns></returns>
         protected virtual bool ProcessGeneratedNode(WorldState currentNode)
         {
-            if (Program.TO_EXECUTE && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
-                throw new Exception("5");
+            /*if (Program.TO_EXECUTE && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
+                throw new Exception("5");*/
             if (currentNode.h + currentNode.g <= this.maxCost)
             // Assuming h is an admissable heuristic, no need to generate nodes that won't get us to the goal
             // within the budget
