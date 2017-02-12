@@ -120,7 +120,10 @@ namespace CPF_experiment
             var sic = new SumIndividualCosts();
             heuristics.Add(sic);
             var astar = new ClassicAStar(sic, false, false, 0);   //withNoBias
-            var astarWithBias = new ClassicAStar(sic, false, false, 2);   //withBias
+            var astarWithBias1 = new ClassicAStar(sic, false, false, 1);   //withBias
+            var astarWithBias2 = new ClassicAStar(sic, false, false, 2);   //withBias2
+            var astarWithBias3 = new ClassicAStar(sic, false, false, 3);   //withBias3
+            var astarWithBias4 = new ClassicAStar(sic, false, false, 4);   //withBias 4
             var cbs = new CBS_LocalConflicts(astar, astar, -1);
             var astar_with_od = new AStarWithOD(sic);
             var epea = new AStarWithPartialExpansion(sic);
@@ -267,10 +270,26 @@ namespace CPF_experiment
 
             //soldier: solvers.Add(new CBS_LocalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
             //soldier:     false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1)); // CBS/EPEA* + BP1
+
+            /*
             solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0)); // CBS/EPEA* + CARDINAL + BP1
-            solvers.Add(new CBS_GlobalConflicts(astarWithBias, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
-                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2)); // CBS/EPEA* + CARDINAL + BP1
+            
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias1, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 1)); // CBS/EPEA* + CARDINAL + BP1
+            */
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, false)); // CBS/EPEA* + CARDINAL + BP1
+
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, true)); // CBS/EPEA* + CARDINAL + BP1
+            /*
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3)); // CBS/EPEA* + CARDINAL + BP1
+            
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 4)); // CBS/EPEA* + CARDINAL + BP1
+            */
 
             //solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
             //    false, CBS_LocalConflicts.ConflictChoice.CARDINAL_MDD, false, false, 1, false)); // CBS + CARDINAL (lookahead) + BP1
@@ -808,9 +827,7 @@ namespace CPF_experiment
             {
                 instanceId += 1;
             }
-            Stopwatch planningStopwatch;
-            planningStopwatch = new Stopwatch();
-            planningStopwatch.Start();
+            
             
             //return; // add for generator
             // Preparing a list of agent indices (not agent nums) for the heuristics' Init() method
@@ -818,7 +835,9 @@ namespace CPF_experiment
             
             // Solve using the different algorithms
             Debug.WriteLine("Solving " + instance);
-            this.PrintProblemStatistics(instance);
+
+            //this.PrintProblemStatistics(instance);
+
             //double cr0 = instance.getConflictRation(0);
             //double cr1 = instance.getConflictRation(1);
 
@@ -890,24 +909,34 @@ namespace CPF_experiment
                         replanStopwath.Start();
                     }
                     int solverSolutionCost;
-                    /*try
-                    {*/
-                        
+                    Stopwatch planningStopwatch = new Stopwatch(); ;
+                    try
+                    {
+                        planningStopwatch.Start();
                         this.run(solvers[i], instance);
                         solverSolutionCost = solvers[i].GetSolutionCost();
-                    /*}
+                    }
                     catch
                     {
-                        Console.WriteLine("POPOPOPOPOPOPOPOPOPOPOP");
+                        Console.WriteLine("TIMEOUT!!!!!!!!!!!!1");
                         solverSolutionCost = -1;
                         solutionCost = -1;
-                    }*/
+                        planningStopwatch.Stop();
+                        continue;
+                    }
                     if (toExecute)
                     {
                         replanStopwath.Stop();
                         //replanStopwath = new Stopwatch();
                     }
-
+                    if (solverSolutionCost < 0)
+                    {
+                        Console.WriteLine("TIMEOUT!!!!!!!!!!!!2");
+                        solverSolutionCost = -1;
+                        solutionCost = -1;
+                        planningStopwatch.Stop();
+                        continue;
+                    }
                     Console.WriteLine();
                     printLinkedList(solvers[i].GetPlan().GetLocations());
                     Console.WriteLine();
@@ -976,7 +1005,7 @@ namespace CPF_experiment
                     if (toExecute && success)
                     {
                         planningTime = planningStopwatch.Elapsed.TotalMilliseconds;
-                        double[] error_prob = {/* 0.001, 0.01, 0.1, */0.3/*, 0.5 */};
+                        double[] error_prob = { /*0.001, 0.01, 0.1,*/0.2, 0.3, 0.4, 0.5 };
                         //for (int c = 1; c < 101; c *= 10)
                         // for (int c = 20; c < 51; c += 10)
                         //for (int index = 0; index < 10; index += 1)
@@ -1019,7 +1048,7 @@ namespace CPF_experiment
                 
                 Console.WriteLine();
             }
-            this.ContinueToNextLine();
+            //this.ContinueToNextLine();
         }
 
         public double elapsedTime;
@@ -1234,7 +1263,7 @@ namespace CPF_experiment
             GC.WaitForPendingFinalizers();
             string solverName = "";
             if (solver.GetType() == typeof(CBS_LocalConflicts) || solver.GetType() == typeof(CBS_GlobalConflicts))
-                solverName = "ICBS + " + ((CBS_LocalConflicts)solver).conflictRange;
+                solverName = "ICBS + " + ((CBS_LocalConflicts)solver).conflictRange + " " + ((CBS_LocalConflicts)solver).rangeConstraint;
             else
                 solverName = "EPEA*";
             sw.Start();
@@ -1284,7 +1313,8 @@ namespace CPF_experiment
                 m_agentNum.ToString(),                  // #Agents
                 this,                                   // runner
                 policy,                                 // Execution Policy (Lazy, Eager ..)
-                m_mapFileName);                         // Map name
+                m_mapFileName,                          // Map name
+                instance.m_nObstacles);                 // Obstacles
            
         }
 
@@ -1405,14 +1435,14 @@ namespace CPF_experiment
         /// <summary>
         /// write execution info to file
         /// </summary>
-        public void writeToFile(double chanceForExecutionMistake, bool header, string solver, string planTime, string elapsedTime, string planCost, string executionCost, string instanceId, string agentsCount, Run runner, ExecutePolicy policy, string mapFileName)
+        public void writeToFile(double chanceForExecutionMistake, bool header, string solver, string planTime, string elapsedTime, string planCost, string executionCost, string instanceId, string agentsCount, Run runner, ExecutePolicy policy, string mapFileName, uint obstaclesPercents)
         {
             string pathDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string filePath = pathDesktop + "\\RobustCSV.csv";
 
             string delimter = ",";
             List<string[]> output = new List<string[]>();
-            string[] temps = new string[12];
+            string[] temps = new string[13];
 
             if (header && File.Exists(filePath))
                 return;
@@ -1429,12 +1459,13 @@ namespace CPF_experiment
                 temps[3] = "Solver";
                 temps[4] = "Policy";
                 temps[5] = "Map";
-                temps[6] = "Plan Cost";
-                temps[7] = "Exec. Cost";
-                temps[8] = "Success";
-                temps[9] = "#Replans";
-                temps[10] = "Plan time";
-                temps[11] = "Replan time";
+                temps[6] = "Obstacles";
+                temps[7] = "Plan Cost";
+                temps[8] = "Exec. Cost";
+                temps[9] = "Success";
+                temps[10] = "#Replans";
+                temps[11] = "Plan time";
+                temps[12] = "Replan time";
             }
             if (!header)
             {
@@ -1443,19 +1474,20 @@ namespace CPF_experiment
                 temps[2] = chanceForExecutionMistake.ToString();
                 temps[3] = solver;
                 temps[4] = policyToString(policy);
-                temps[5] = Path.GetFileNameWithoutExtension(mapFileName); 
-                temps[6] = planCost;
-                temps[7] = executionCost;
-                if (temps[7].Equals("-1") || temps[7].Equals("-2") || temps[7].Equals("-3"))
+                temps[5] = Path.GetFileNameWithoutExtension(mapFileName);
+                temps[6] = obstaclesPercents.ToString(); ;
+                temps[7] = planCost;
+                temps[8] = executionCost;
+                if (temps[8].Equals("-1") || temps[8].Equals("-2") || temps[8].Equals("-3"))
                 {
                     //temps[7] = "-1";
-                    temps[8] = "0";
+                    temps[9] = "0";
                 }
                 else
-                    temps[8] = "1";
-                temps[9] =  replanCounter.ToString();
-                temps[10] = planTime;
-                temps[11] = replanTime.ToString();
+                    temps[9] = "1";
+                temps[10] =  replanCounter.ToString();
+                temps[11] = planTime;
+                temps[12] = replanTime.ToString();
             }
             output.Add(temps);
 
@@ -1542,8 +1574,8 @@ namespace CPF_experiment
             //end test
 
             printLinkedList(plan.GetLocations(), WRITE_LOG);
-            if (sw.ElapsedMilliseconds > Run.TIMEOUT)
-                throw new Exception("1");
+           /* if (sw.ElapsedMilliseconds > Run.TIMEOUT)
+                throw new Exception("1");*/
             int cost                            = 0;
             Move[][] a                          = instance.singleAgentOptimalMoves;
             List<Move> previousTime             = null;
@@ -1582,8 +1614,8 @@ namespace CPF_experiment
 
                 if (policy == ExecutePolicy.MCP)
                 {
-                    if (i == 30)
-                        Console.Read();
+                    /*if (i == 30)
+                        Console.Read();*/
                     if (node.Next != null)
                     {
                         List<Move> nextMove = node.Next.Value;

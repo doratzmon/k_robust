@@ -2081,6 +2081,8 @@ namespace CPF_experiment
                     // Also, merging creates a non-root node with a null constraint, and this helps avoid adding the null to the answer.
                     for (int i = 0; i <= cbs.conflictRange; i++)
                     {
+                        if (cbs.rangeConstraint && i > 0)
+                            break;
                         CbsConstraint currentConstraint = current.constraint;
                         TimedMove     currentMove       = current.constraint.move;
                         CbsConstraint newConstraint = new CbsConstraint(currentConstraint.agentNum, currentMove.x, currentMove.y, currentMove.direction, currentMove.time + i);

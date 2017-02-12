@@ -23,12 +23,20 @@ namespace CPF_experiment
 
         public CbsConstraint() : this(-1, -1, -1, Move.Direction.NO_DIRECTION, -1) {} // Nonsense values until Init, just allocate move
 
-        public CbsConstraint(CbsConflict conflict, ProblemInstance instance, bool agentA)
+        public CbsConstraint(CbsConflict conflict, ProblemInstance instance, bool agentA, bool isRangeConstraint = false)
         {
             Move move;
             int agentNum;
-
-            int minTime = Math.Min(conflict.timeStepAgentA, conflict.timeStepAgentB);
+            int minTime;
+            if(isRangeConstraint)
+                minTime = Math.Min(conflict.timeStepAgentA, conflict.timeStepAgentB);
+            else
+            {
+                if (agentA)
+                    minTime = conflict.timeStepAgentA;
+                else
+                    minTime = conflict.timeStepAgentB;
+            }
             if (agentA)
             {
                 move = conflict.agentAmove;

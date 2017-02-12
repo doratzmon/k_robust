@@ -2248,7 +2248,7 @@
             write line to log
             </summary>
         </member>
-        <member name="M:CPF_experiment.Run.writeToFile(System.Double,System.Boolean,System.String,System.String,System.String,System.String,System.String,System.String,System.String,CPF_experiment.Run,CPF_experiment.Run.ExecutePolicy,System.String)">
+        <member name="M:CPF_experiment.Run.writeToFile(System.Double,System.Boolean,System.String,System.String,System.String,System.String,System.String,System.String,System.String,CPF_experiment.Run,CPF_experiment.Run.ExecutePolicy,System.String,System.UInt32)">
             <summary>
             write execution info to file
             </summary>

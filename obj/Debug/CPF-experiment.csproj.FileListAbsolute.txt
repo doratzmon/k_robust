@@ -40,3 +40,17 @@ C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Debug\
 C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Debug\CPF-experiment.csproj.GenerateResource.Cache
 C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Debug\d0.exe
 C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Debug\d0.pdb
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\d0.exe.config
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\d0.xml
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\d0.exe
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\d0.pdb
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\MongoDB.Bson.dll
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\MongoDB.Driver.dll
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\MongoDB.Bson.xml
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Debug\MongoDB.Driver.xml
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Debug\CPF-experiment.csprojResolveAssemblyReference.cache
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Debug\CPF_experiment.Properties.Resources.resources
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Debug\CPF-experiment.csproj.GenerateResource.Cache
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Debug\d0.exe
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Debug\d0.pdb

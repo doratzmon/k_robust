@@ -92,6 +92,7 @@ namespace CPF_experiment
         protected ICbsSolver singleAgentSolver;
         public int mergeThreshold;
         public int conflictRange;
+        public bool rangeConstraint;
         /// <summary>
         /// TODO: Shouldn't this be called minTimeStep?
         /// </summary>
@@ -130,12 +131,13 @@ namespace CPF_experiment
                                   bool doShuffle = false, BypassStrategy bypassStrategy = BypassStrategy.NONE, bool doMalte = false,
                                   ConflictChoice conflictChoice = ConflictChoice.FIRST,
                                   bool justbreakForConflicts = false, bool useMddHeuristic = false,
-                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0)
+                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, bool rangeConstraint = false)
         {
             this.closedList = new Dictionary<CbsNode, CbsNode>();
             this.openList = new OpenList(this);
             this.mergeThreshold = mergeThreshold;
             this.conflictRange = conflictRange;
+            this.rangeConstraint = rangeConstraint;
             this.solver = generalSolver;
             this.singleAgentSolver = singleAgentSolver;
             this.doShuffle = doShuffle;
@@ -1719,8 +1721,8 @@ namespace CPF_experiment
                     node.agentAExpansion = CbsNode.ExpansionState.EXPANDED;
                 else
                     node.agentBExpansion = CbsNode.ExpansionState.EXPANDED;
-
-                var newConstraint = new CbsConstraint(conflict, instance, doLeftChild);
+                
+                var newConstraint = new CbsConstraint(conflict, instance, doLeftChild, rangeConstraint);
                 CbsNode child = new CbsNode(node, newConstraint, conflictingAgentIndex);
 
                 if (this.doMalte && doLeftChild == false)
@@ -1854,9 +1856,9 @@ namespace CPF_experiment
                                   bool doShuffle = false, BypassStrategy bypassStrategy = BypassStrategy.NONE, bool doMalte = false,
                                   ConflictChoice conflictChoice = ConflictChoice.FIRST,
                                   bool justbreakForConflicts = false, bool useMddHeuristic = false,
-                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0)
+                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, bool rangeConstraint = false)
             : base(singleAgentSolver, generalSolver, mergeThreshold, doShuffle, bypassStrategy, doMalte, conflictChoice,
-                   justbreakForConflicts, useMddHeuristic, lookaheadMaxExpansions, mergeCausesRestart, conflictRange)
+                   justbreakForConflicts, useMddHeuristic, lookaheadMaxExpansions, mergeCausesRestart, conflictRange, rangeConstraint)
         {
             //throw new NotImplementedException("Not supported until we decide how to count conflicts. Used to rely on the specific conflict chosen in each node.");
         }

@@ -203,7 +203,7 @@ namespace CPF_experiment
             TextWriter output;
             //int[] agentListSizes = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100};
             //int[] agentListSizes = { 60, 65, 70, 75, 80, 85, 90, 95, 100 };
-            int[] agentListSizes = { /*5, 10, 15, */20 /*, 25, 30, 35, 40, 45, 50*/};
+            int[] agentListSizes = { /*5, 10, 15, */20, 25, 30, 35, 40, 45, 50};
 
             bool continueFromLastRun = false;
             string[] lineParts = null;
@@ -336,7 +336,7 @@ namespace CPF_experiment
 
             string delimter = ",";
             List<string[]> output = new List<string[]>();
-            string[] temps = new string[12];
+            string[] temps = new string[13];
 
             if (header && File.Exists(filePath))
                 return;
@@ -353,12 +353,13 @@ namespace CPF_experiment
                 temps[3] = "Solver";
                 temps[4] = "Policy";
                 temps[5] = "Map";
-                temps[6] = "Plan Cost";
-                temps[7] = "Exec. Cost";
-                temps[8] = "Success";
-                temps[9] = "#Replans";
-                temps[10] = "Plan time";
-                temps[11] = "Replan time";
+                temps[6] = "Obstacles";
+                temps[7] = "Plan Cost";
+                temps[8] = "Exec. Cost";
+                temps[9] = "Success";
+                temps[10] = "#Replans";
+                temps[11] = "Plan time";
+                temps[12] = "Replan time";
             }
             if (!header)
             {
@@ -417,8 +418,8 @@ namespace CPF_experiment
         static public Random rand = new Random();
         public int executePlan(Run runner, ProblemInstance instance, LinkedList<List<Move>> newPaths, LazyOrEager lazyOrEager, double chance)
         {
-            if (sw.ElapsedMilliseconds > Run.TIMEOUT)
-                throw new Exception("TIMEOUT");
+            /*if (sw.ElapsedMilliseconds > Run.TIMEOUT)
+                throw new Exception("TIMEOUT");*/
             int cost    = 0;
             Move[][] a  = instance.singleAgentOptimalMoves;
             List<Move> previousTime = null;
@@ -739,7 +740,7 @@ namespace CPF_experiment
 
             Program.onlyReadInstances = false;
 
-            int instances = 10;
+            int instances = 1;
             //int instances = 50;
 
             //bool runGrids = false;
@@ -751,11 +752,11 @@ namespace CPF_experiment
 
             if (runGrids == true)
             {
-                int[] gridSizes = new int[] { 8, };
+                int[] gridSizes = new int[] {8, };
                 //int[] agentListSizes = new int[] { 2, 3, 4 };
 
                 //int[] gridSizes = new int[] { 6, };
-                int[] agentListSizes = new int[] { 15 };
+                int[] agentListSizes = new int[] {/* 1, 2, 3, 4, 5, 6, 7,*/ 6/*, 9, 10 ,11,*//* 12, 13, 14, 15*/};
                 //int[] agentListSizes = new int[] { /*2,*/ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 };
                 // Note that success rate drops almost to zero for EPEA* and A*+OD/SIC on 40 agents.
             
@@ -765,7 +766,7 @@ namespace CPF_experiment
 
                 //int[] obstaclesPercents = new int[] { 20, };
                 //int[] obstaclesPercents = new int[] { /*0, 5, 10, 15, 20, 25, 30, 35, */20, 30, 40};
-                int[] obstaclesPercents = new int[] { 0, /*5, 10,*/ /*15,*/ /*20, 25, 30, 35, 20, 30, 40*/ };
+                int[] obstaclesPercents = new int[] { /*0, 5, 10,*/ /*15,*/ 20/*, 25, 30, 35, 20, 30, 40, 50, 60*/ };
                 me.RunExperimentSet(gridSizes, agentListSizes, obstaclesPercents, instances);
             }
             else if (runDragonAge == true)
