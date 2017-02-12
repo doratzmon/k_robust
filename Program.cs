@@ -740,8 +740,8 @@ namespace CPF_experiment
 
             Program.onlyReadInstances = false;
 
-            int instances = 1;
-            //int instances = 50;
+            //int instances = 1;
+            int instances = 50;
 
             //bool runGrids = false;
             //bool runDragonAge = true;
@@ -766,7 +766,7 @@ namespace CPF_experiment
 
                 //int[] obstaclesPercents = new int[] { 20, };
                 //int[] obstaclesPercents = new int[] { /*0, 5, 10, 15, 20, 25, 30, 35, */20, 30, 40};
-                int[] obstaclesPercents = new int[] { /*0, 5, 10,*/ /*15,*/ 20/*, 25, 30, 35, 20, 30, 40, 50, 60*/ };
+                int[] obstaclesPercents = new int[] { /*0, 5, 10,*/ /*15,*/ 20, 25, 30, 35, 20, 30, 40, 50, 60 };
                 me.RunExperimentSet(gridSizes, agentListSizes, obstaclesPercents, instances);
             }
             else if (runDragonAge == true)
