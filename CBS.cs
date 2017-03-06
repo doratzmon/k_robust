@@ -92,7 +92,9 @@ namespace CPF_experiment
         protected ICbsSolver singleAgentSolver;
         public int mergeThreshold;
         public int conflictRange;
-        public bool rangeConstraint;
+        //public bool rangeConstraint;
+        public Run.ConstraintPolicy constraintPolicy;
+
         /// <summary>
         /// TODO: Shouldn't this be called minTimeStep?
         /// </summary>
@@ -131,13 +133,14 @@ namespace CPF_experiment
                                   bool doShuffle = false, BypassStrategy bypassStrategy = BypassStrategy.NONE, bool doMalte = false,
                                   ConflictChoice conflictChoice = ConflictChoice.FIRST,
                                   bool justbreakForConflicts = false, bool useMddHeuristic = false,
-                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, bool rangeConstraint = false)
+                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, Run.ConstraintPolicy constraintPolicy = Run.ConstraintPolicy.Single)
         {
             this.closedList = new Dictionary<CbsNode, CbsNode>();
             this.openList = new OpenList(this);
             this.mergeThreshold = mergeThreshold;
             this.conflictRange = conflictRange;
-            this.rangeConstraint = rangeConstraint;
+            //this.rangeConstraint = rangeConstraint;
+            this.constraintPolicy = constraintPolicy;
             this.solver = generalSolver;
             this.singleAgentSolver = singleAgentSolver;
             this.doShuffle = doShuffle;
@@ -1722,7 +1725,7 @@ namespace CPF_experiment
                 else
                     node.agentBExpansion = CbsNode.ExpansionState.EXPANDED;
                 
-                var newConstraint = new CbsConstraint(conflict, instance, doLeftChild, rangeConstraint);
+                var newConstraint = new CbsConstraint(conflict, instance, doLeftChild, constraintPolicy);
                 CbsNode child = new CbsNode(node, newConstraint, conflictingAgentIndex);
 
                 if (this.doMalte && doLeftChild == false)
@@ -1731,7 +1734,7 @@ namespace CPF_experiment
                     // by forcing the first agent in the _right_ child to _always_ be at the conflict point.
                     // Notice that vertex conflicts create must constraint with NO_DIRECTION and edge conflicts
                     // don't, as necessary.
-                    var newMustConstraint = new CbsConstraint(conflict, instance, true);
+                    var newMustConstraint = new CbsConstraint(conflict, instance, true, constraintPolicy);
                     child.SetMustConstraint(newMustConstraint);
                 }
 
@@ -1856,9 +1859,9 @@ namespace CPF_experiment
                                   bool doShuffle = false, BypassStrategy bypassStrategy = BypassStrategy.NONE, bool doMalte = false,
                                   ConflictChoice conflictChoice = ConflictChoice.FIRST,
                                   bool justbreakForConflicts = false, bool useMddHeuristic = false,
-                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, bool rangeConstraint = false)
+                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, Run.ConstraintPolicy constraintPolicy = Run.ConstraintPolicy.Single/*bool rangeConstraint = false*/)
             : base(singleAgentSolver, generalSolver, mergeThreshold, doShuffle, bypassStrategy, doMalte, conflictChoice,
-                   justbreakForConflicts, useMddHeuristic, lookaheadMaxExpansions, mergeCausesRestart, conflictRange, rangeConstraint)
+                   justbreakForConflicts, useMddHeuristic, lookaheadMaxExpansions, mergeCausesRestart, conflictRange, constraintPolicy)
         {
             //throw new NotImplementedException("Not supported until we decide how to count conflicts. Used to rely on the specific conflict chosen in each node.");
         }

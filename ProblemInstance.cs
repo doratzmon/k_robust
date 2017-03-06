@@ -411,6 +411,7 @@ namespace CPF_experiment
         /// <param name="fileName"></param>
         public void Export(string fileName)
         {
+            
             TextWriter output = new StreamWriter(Directory.GetCurrentDirectory() + "\\Instances\\"+fileName);
             // Output the instance ID
             if (this.parameters.ContainsKey(ProblemInstance.GRID_NAME_KEY))

@@ -127,6 +127,8 @@ namespace CPF_experiment
             this.singleAgentSolver = singleAgentSolver;
         }
 
+        public int agentToReplan;
+
         /// <summary>
         /// Child from branch action constructor
         /// </summary>
@@ -135,6 +137,7 @@ namespace CPF_experiment
         /// <param name="agentToReplan"></param>
         public CbsNode(CbsNode father, CbsConstraint newConstraint, int agentToReplan)
         {
+            this.agentToReplan = agentToReplan;
             this.allSingleAgentPlans = father.allSingleAgentPlans.ToArray<SinglePlan>();
             this.allSingleAgentCosts = father.allSingleAgentCosts.ToArray<int>();
             this.mdds = father.mdds.ToArray<MDD>();
@@ -2079,10 +2082,16 @@ namespace CPF_experiment
                     // Nodes that only differ in such irrelevant conflicts will have the same single agent paths.
                     // Dereferencing current.prev is safe because current isn't the root.
                     // Also, merging creates a non-root node with a null constraint, and this helps avoid adding the null to the answer.
-                    for (int i = 0; i <= cbs.conflictRange; i++)
+                    for (int i = -cbs.conflictRange; i <= cbs.conflictRange; i++)
                     {
-                        if (!cbs.rangeConstraint && i > 0)
-                            break;
+                        if (current.constraint.move.time + i <= 0)
+                            continue;
+                        if (cbs.constraintPolicy == Run.ConstraintPolicy.Single && i != 0)
+                            continue;
+                        if (cbs.constraintPolicy == Run.ConstraintPolicy.Range  && i < 0)
+                            continue;
+                        if (cbs.constraintPolicy == Run.ConstraintPolicy.DoubleRange && isLeftNode(current) && i != 0)
+                            continue;
                         CbsConstraint currentConstraint = current.constraint;
                         TimedMove     currentMove       = current.constraint.move;
                         CbsConstraint newConstraint = new CbsConstraint(currentConstraint.agentNum, currentMove.x, currentMove.y, currentMove.direction, currentMove.time + i);
@@ -2091,6 +2100,13 @@ namespace CPF_experiment
                 current = current.prev;
             }
             return constraints;
+        }
+
+        private bool isLeftNode(CbsNode node)
+        {
+            if (node.prev == null || node.agentToReplan == node.prev.conflict.agentAIndex)
+                return true;
+            return false;
         }
 
         /// <summary>

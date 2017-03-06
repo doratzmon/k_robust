@@ -44,6 +44,7 @@ namespace CPF_experiment
         public  int solutionCost = -1;
         //Reasonable 
         public enum ExecutePolicy { Lazy, Stressful, Reasonable, Stressful_Repair , Reasonable_Repair, MCP };
+        public enum ConstraintPolicy { Single, Range, DoubleRange };
 
         /// <summary>
         /// This hold an open stream to the results file.
@@ -278,19 +279,61 @@ namespace CPF_experiment
             solvers.Add(new CBS_GlobalConflicts(astarWithBias1, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 1)); // CBS/EPEA* + CARDINAL + BP1
             */
+            /*
             solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, false)); // CBS/EPEA* + CARDINAL + BP1
 
             solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, true)); // CBS/EPEA* + CARDINAL + BP1
+             */
+
             /*
             solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
-                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3)); // CBS/EPEA* + CARDINAL + BP1
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3, true)); // CBS/EPEA* + CARDINAL + BP1
             
-            solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
-                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 4)); // CBS/EPEA* + CARDINAL + BP1
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias4, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 4, true)); // CBS/EPEA* + CARDINAL + BP1
             */
+           /*
+            solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0, ConstraintPolicy.Single)); // CBS/EPEA* + CARDINAL + BP1
+            
+           solvers.Add(new CBS_GlobalConflicts(astarWithBias1, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                       false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 1, ConstraintPolicy.Single)); // CBS/EPEA* + CARDINAL + BP1
 
+           solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                       false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, ConstraintPolicy.Single)); // CBS/EPEA* + CARDINAL + BP1
+           *//*
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3, ConstraintPolicy.Single)); // CBS/EPEA* + CARDINAL + BP1
+            */
+            
+            solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
+            
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias1, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 1, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
+            
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
+            /*
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
+            */
+           /* 
+          solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                      false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0, ConstraintPolicy.DoubleRange)); // CBS/EPEA* + CARDINAL + BP1
+          
+        solvers.Add(new CBS_GlobalConflicts(astarWithBias1, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                    false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 1, ConstraintPolicy.DoubleRange)); // CBS/EPEA* + CARDINAL + BP1
+
+        solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                    false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, ConstraintPolicy.DoubleRange)); // CBS/EPEA* + CARDINAL + BP1
+       *//*
+            solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+                        false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3, ConstraintPolicy.DoubleRange)); // CBS/EPEA* + CARDINAL + BP1
+            */
+          // (/
             //solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
             //    false, CBS_LocalConflicts.ConflictChoice.CARDINAL_MDD, false, false, 1, false)); // CBS + CARDINAL (lookahead) + BP1
 
@@ -1005,7 +1048,7 @@ namespace CPF_experiment
                     if (toExecute && success)
                     {
                         planningTime = planningStopwatch.Elapsed.TotalMilliseconds;
-                        double[] error_prob = { /*0.001, 0.01, 0.1,*/0.2, 0.3, 0.4, 0.5 };
+                        double[] error_prob = {/* 000.1*/0.001/*, 0.01, 0.1,*//*0.2, 0.3, 0.4*//*, 0.5*/ };
                         //for (int c = 1; c < 101; c *= 10)
                         // for (int c = 20; c < 51; c += 10)
                         //for (int index = 0; index < 10; index += 1)
@@ -1018,7 +1061,8 @@ namespace CPF_experiment
                             // Move[] originalStarts = new Move[instance.GetNumOfAgents()];
                                  //   Array values = Enum.GetValues(typeof(ExecutePolicy));
                             //  Array values = new ExecutePolicy[2] { ExecutePolicy.Reasonable, ExecutePolicy.Stressful };
-                            //  Array values = new ExecutePolicy[1] { ExecutePolicy.Lazy };
+                             // Array values = new ExecutePolicy[2] { ExecutePolicy.Lazy, ExecutePolicy.Reasonable };
+                            //Array values = new ExecutePolicy[3] { ExecutePolicy.MCP, ExecutePolicy.Reasonable_Repair, ExecutePolicy.Stressful_Repair };
                             Array values = new ExecutePolicy[1] { ExecutePolicy.MCP };
                             //Array values = new ExecutePolicy[1] { ExecutePolicy.Reasonable_Repair };
                             //        Array values = new ExecutePolicy[1] { ExecutePolicy.Stressful };
@@ -1263,7 +1307,7 @@ namespace CPF_experiment
             GC.WaitForPendingFinalizers();
             string solverName = "";
             if (solver.GetType() == typeof(CBS_LocalConflicts) || solver.GetType() == typeof(CBS_GlobalConflicts))
-                solverName = "ICBS + " + ((CBS_LocalConflicts)solver).conflictRange + " " + ((CBS_LocalConflicts)solver).rangeConstraint;
+                solverName = "ICBS + " + ((CBS_LocalConflicts)solver).conflictRange;
             else
                 solverName = "EPEA*";
             sw.Start();
@@ -1310,11 +1354,13 @@ namespace CPF_experiment
                 solutionSumOfCost.ToString(),           // solution cost
                 newCost.ToString(),                     // exec. cost
                 instanceId.ToString(),                  // instanceId                         
-                m_agentNum.ToString(),                  // #Agents
+                instance.m_vAgents.Length.ToString(),   // #Agents
                 this,                                   // runner
                 policy,                                 // Execution Policy (Lazy, Eager ..)
                 m_mapFileName,                          // Map name
-                instance.m_nObstacles);                 // Obstacles
+                instance.m_nObstacles,                  // Obstacles
+                ((CBS_GlobalConflicts)solver).constraintPolicy,  // Constraint Policy
+                solver);                                // Solver
            
         }
 
@@ -1435,14 +1481,14 @@ namespace CPF_experiment
         /// <summary>
         /// write execution info to file
         /// </summary>
-        public void writeToFile(double chanceForExecutionMistake, bool header, string solver, string planTime, string elapsedTime, string planCost, string executionCost, string instanceId, string agentsCount, Run runner, ExecutePolicy policy, string mapFileName, uint obstaclesPercents)
+        public void writeToFile(double chanceForExecutionMistake, bool header, string solver, string planTime, string elapsedTime, string planCost, string executionCost, string instanceId, string agentsCount, Run runner, ExecutePolicy policy, string mapFileName, uint obstaclesPercents, ConstraintPolicy constraintPolicy, ISolver isolver)
         {
             string pathDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string filePath = pathDesktop + "\\RobustCSV.csv";
 
             string delimter = ",";
             List<string[]> output = new List<string[]>();
-            string[] temps = new string[13];
+            string[] temps = new string[17];
 
             if (header && File.Exists(filePath))
                 return;
@@ -1466,6 +1512,7 @@ namespace CPF_experiment
                 temps[10] = "#Replans";
                 temps[11] = "Plan time";
                 temps[12] = "Replan time";
+                temps[13] = "Constraint policy";
             }
             if (!header)
             {
@@ -1488,6 +1535,10 @@ namespace CPF_experiment
                 temps[10] =  replanCounter.ToString();
                 temps[11] = planTime;
                 temps[12] = replanTime.ToString();
+                temps[13] = constraintPolicyToString(constraintPolicy);
+                temps[14] = ((CBS_GlobalConflicts)isolver).GetMemoryUsed().ToString();
+                temps[15] = ((CBS_GlobalConflicts)isolver).GetSolutionDepth().ToString();
+                temps[16] = ((CBS_GlobalConflicts)isolver).GetGenerated().ToString();
             }
             output.Add(temps);
 
@@ -1518,6 +1569,21 @@ namespace CPF_experiment
                 return "Reasonable_Repair";
             else if (policy == ExecutePolicy.MCP)
                 return "MCP";
+            else
+                return "NO_POLICY";
+        }
+
+        /// <summary>
+        /// convert constraint policy to string
+        /// </summary>
+        private string constraintPolicyToString(ConstraintPolicy policy)
+        {
+            if (policy == ConstraintPolicy.Single)
+                return "Single";
+            else if (policy == ConstraintPolicy.Range)
+                return "Range";
+            else if (policy == ConstraintPolicy.DoubleRange)
+                return "Double Range";
             else
                 return "NO_POLICY";
         }
@@ -2378,7 +2444,8 @@ namespace CPF_experiment
                             change = true;
                             lastMoveChangeAgents.Add(agentIndex);
                         }
-                        agentToMove[agentIndex]     = new TimedMove((TimedMove)locations.ElementAt<Move>(agentIndex));
+                        agentToMove[agentIndex]     = new TimedMove((TimedMove)locations[agentIndex]);
+                        //agentToMove[agentIndex]     = new TimedMove((TimedMove)locations.ElementAt<Move>(agentIndex));
                         locations[agentIndex]       = new TimedMove((TimedMove)previousToMove[agentIndex]);
                         previousToMove[agentIndex]  = new TimedMove((TimedMove)agentToMove[agentIndex]);
                     }
@@ -2407,7 +2474,8 @@ namespace CPF_experiment
                 {
                     foreach (int agentIndex in delayAgents)
                     {
-                        previousToMove[agentIndex] = new TimedMove((TimedMove)locations.ElementAt<Move>(agentIndex));
+                        previousToMove[agentIndex] = new TimedMove((TimedMove)locations[agentIndex]);
+                        //previousToMove[agentIndex] = new TimedMove((TimedMove)locations.ElementAt<Move>(agentIndex));
                     }
                 }
                 first = false;

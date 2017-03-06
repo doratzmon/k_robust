@@ -1,1 +1,14 @@
 C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.exe.config
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.xml
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.exe
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.pdb
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Bson.dll
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Driver.Core.dll
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Driver.dll
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Bson.xml
+C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Driver.xml
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF_experiment.Properties.Resources.resources
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\d0.exe
+C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\d0.pdb

@@ -148,8 +148,15 @@ namespace CPF_experiment
                             //return; // DELETE ME!!!!!!!!!!!!!!!!!!!!!!!!!@# JUST FOR DEBUGGING!!!
 
                             // Save the latest problem
-                            if (File.Exists(currentProblemFileName))
-                                File.Delete(currentProblemFileName);
+                            try
+                            {
+                                if (File.Exists(currentProblemFileName))
+                                    File.Delete(currentProblemFileName);
+                            }
+                            catch
+                            {
+                                ;
+                            }
                             var lastProblemFile = new StreamWriter(currentProblemFileName);
                             lastProblemFile.Write("{0},{1},{2},{3}", gs, obs, ag, i);
                             for (int j = 0; j < runner.outOfTimeCounters.Length; j++)
@@ -203,7 +210,7 @@ namespace CPF_experiment
             TextWriter output;
             //int[] agentListSizes = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100};
             //int[] agentListSizes = { 60, 65, 70, 75, 80, 85, 90, 95, 100 };
-            int[] agentListSizes = { /*5, 10, 15, */20, 25, 30, 35, 40, 45, 50};
+            int[] agentListSizes = { /*5, 10, 15, */30};
 
             bool continueFromLastRun = false;
             string[] lineParts = null;
@@ -270,7 +277,14 @@ namespace CPF_experiment
 
                         replanStopwath.Stop();
                         //save the latest problem
-                        File.Delete(currentProblemFileName);
+                        try
+                        {
+                            File.Delete(currentProblemFileName);
+                        }
+                        catch
+                        {
+                            ;
+                        }
                         output = new StreamWriter(currentProblemFileName);
                         output.Write("{0},{1},{2}", ag, i, map);
                         for (int j = 0; j < runner.outOfTimeCounters.Length; j++)
@@ -745,8 +759,8 @@ namespace CPF_experiment
 
             //bool runGrids = false;
             //bool runDragonAge = true;
-            bool runDragonAge = false;
-            bool runGrids = true;
+            bool runDragonAge = true;
+            bool runGrids = false;
             bool runMazesWidth1 = false;
             bool runSpecific = false;
 
@@ -756,7 +770,7 @@ namespace CPF_experiment
                 //int[] agentListSizes = new int[] { 2, 3, 4 };
 
                 //int[] gridSizes = new int[] { 6, };
-                int[] agentListSizes = new int[] {/* 1, 2, 3, 4, 5, 6, 7,*/ 6/*, 9, 10 ,11,*//* 12, 13, 14, 15*/};
+                int[] agentListSizes = new int[] {/* 1, 2, 3, 4, 5, 6, 7,*/ /*6,7,8, 9, 10*/ /*,11, 12, 13, 14, 15*//*10, 15, 20, 25, 30 ,35, 40, 45, 50*//*4, 6,7,8,*/9/*,10*/};
                 //int[] agentListSizes = new int[] { /*2,*/ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 };
                 // Note that success rate drops almost to zero for EPEA* and A*+OD/SIC on 40 agents.
             
@@ -766,7 +780,7 @@ namespace CPF_experiment
 
                 //int[] obstaclesPercents = new int[] { 20, };
                 //int[] obstaclesPercents = new int[] { /*0, 5, 10, 15, 20, 25, 30, 35, */20, 30, 40};
-                int[] obstaclesPercents = new int[] { /*0, 5, 10,*/ /*15,*/ 20, 25, 30, 35, 20, 30, 40, 50, 60 };
+                int[] obstaclesPercents = new int[] { 0/*0, 5, 10,*/ /*15,*//* 20, 25, 30, 35, 20, 30, 40, 50, 60 */};
                 me.RunExperimentSet(gridSizes, agentListSizes, obstaclesPercents, instances);
             }
             else if (runDragonAge == true)
