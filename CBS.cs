@@ -170,7 +170,6 @@ namespace CPF_experiment
         {
             this.instance = problemInstance;
             this.runner = runner;
-
             this.ClearPrivateStatistics();
             this.totalCost = 0;
             this.solutionDepth = -1;
@@ -179,16 +178,13 @@ namespace CPF_experiment
             this.milliCap = int.MaxValue;
             this.goalNode = null;
             this.solution = null;
-
             if (problemInstance.parameters.ContainsKey(IndependenceDetection.MAXIMUM_COST_KEY))
                 this.maxCost = (int)(problemInstance.parameters[IndependenceDetection.MAXIMUM_COST_KEY]);
             else
                 this.maxCost = int.MaxValue;
-
             this.topMost = this.SetGlobals();
 
             this.minDepth = minDepth;
-
             CbsNode root = new CbsNode(instance.m_vAgents.Length, this.solver, this.singleAgentSolver, this); // Problem instance and various strategy data is all passed under 'this'.
             // Solve the root node
             bool solved = root.Solve(minDepth);
@@ -199,7 +195,6 @@ namespace CPF_experiment
                 this.highLevelGenerated++;
                 this.closedList.Add(root, root);
             }
-
         }
 
         public virtual void Setup(ProblemInstance problemInstance, Run runner)

@@ -4,8 +4,8 @@ namespace CPF_experiment
     class Constants
     {
 
-        public static int MAX_TIME = 300000;
-        //public static int MAX_TIME = int.MaxValue;
+        //public static int MAX_TIME = 300000;
+        public static int MAX_TIME = int.MaxValue;
         /// <summary>
         /// The cost that is set to the algorithms when all the states have been expanded and no goal was found 
         /// </summary>

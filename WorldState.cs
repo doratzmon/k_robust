@@ -112,6 +112,7 @@ namespace CPF_experiment
             this.goalSingleCosts = null;
             this.singlePlans = null;
             this.hBonus = 0;
+            this.conflictRange = conflictRange;
         }
 
         /// <summary>

@@ -20,6 +20,8 @@ namespace CPF_experiment
         /// Delimiter character used when writing the results of the runs to the output file.
         /// </summary>
         /// 
+        public static bool toPrint = false;
+
         public static int upperB = 2;
 
         public static readonly string RESULTS_DELIMITER = ",";
@@ -294,6 +296,10 @@ namespace CPF_experiment
             solvers.Add(new CBS_GlobalConflicts(astarWithBias4, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 4, true)); // CBS/EPEA* + CARDINAL + BP1
             */
+
+            //solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
+            //            false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
+
            /*
             solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0, ConstraintPolicy.Single)); // CBS/EPEA* + CARDINAL + BP1
@@ -307,15 +313,16 @@ namespace CPF_experiment
             solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3, ConstraintPolicy.Single)); // CBS/EPEA* + CARDINAL + BP1
             */
-            
+           
             solvers.Add(new CBS_GlobalConflicts(astar, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 0, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
-            
+           
             solvers.Add(new CBS_GlobalConflicts(astarWithBias1, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 1, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
             
             solvers.Add(new CBS_GlobalConflicts(astarWithBias2, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 2, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
+             
             /*
             solvers.Add(new CBS_GlobalConflicts(astarWithBias3, epea, -1, false, CBS_LocalConflicts.BypassStrategy.FIRST_FIT_LOOKAHEAD,
                         false, CBS_LocalConflicts.ConflictChoice.FIRST, false, false, 1, false, 3, ConstraintPolicy.Range)); // CBS/EPEA* + CARDINAL + BP1
@@ -980,9 +987,13 @@ namespace CPF_experiment
                         planningStopwatch.Stop();
                         continue;
                     }
-                    Console.WriteLine();
-                    printLinkedList(solvers[i].GetPlan().GetLocations());
-                    Console.WriteLine();
+                    if (toPrint)
+                    {
+                        Console.WriteLine();
+                        printLinkedList(solvers[i].GetPlan().GetLocations());
+                        Console.WriteLine();
+                    }
+                    
                     if (solvers[0] is CBS_GlobalConflicts)
                     {
                         checkValidBiasPlan(solvers[i].GetPlan().GetLocations(), ((CBS_GlobalConflicts)solvers[0]).conflictRange);
@@ -1087,7 +1098,7 @@ namespace CPF_experiment
                         }
                     }
                 }
-                else
+                else if(toPrint)
                     PrintNullStatistics(solvers[i]);
                 
                 Console.WriteLine();
@@ -1122,11 +1133,10 @@ namespace CPF_experiment
                 Console.WriteLine("Solution depth lower bound: {0}", solver.GetSolutionDepth());
             }
             Console.WriteLine();
-
             Console.WriteLine("Time In milliseconds: {0}", elapsedTime);
            // Console.WriteLine("Total Unique/Full Expanded Nodes: {0}", solver.GetNodesPassedPruningCounter());
-
-            this.PrintStatistics(instance, solver, elapsedTime);
+            if(toPrint)
+                this.PrintStatistics(instance, solver, elapsedTime);
             // Solver clears itself when it finishes the search.
             solver.ClearStatistics();
         }
@@ -1330,7 +1340,8 @@ namespace CPF_experiment
                     double executionCost    = executePlan(this, instance, newPlan, policy, chance, solver);
                     newCost                 = computeSumOfCost(newPlan);
                     writeLineToLog("Execution Plan:");
-                    printLinkedList(newPlan, WRITE_LOG);
+                    if(toPrint)
+                        printLinkedList(newPlan, WRITE_LOG);
                     checkValidExecution(originalLinkedList, newPlan);
             }
                 else
@@ -1638,8 +1649,8 @@ namespace CPF_experiment
             //Dictionary < KeyValuePair<int, int>, LinkedList >
             //printMcpGraph();
             //end test
-
-            printLinkedList(plan.GetLocations(), WRITE_LOG);
+            if (toPrint)
+                printLinkedList(plan.GetLocations(), WRITE_LOG);
            /* if (sw.ElapsedMilliseconds > Run.TIMEOUT)
                 throw new Exception("1");*/
             int cost                            = 0;
@@ -1672,7 +1683,8 @@ namespace CPF_experiment
                             if(delayAgents.Contains(iMove))
                                 Console.WriteLine("Problem!!");
                             delayAgents.Add(iMove);
-                            Console.WriteLine("Agent: " + iMove + ", At time: " + i);
+                            if (toPrint)
+                                Console.WriteLine("Agent: " + iMove + ", At time: " + i);
                             writeLineToLog("Delay agent: " + iMove + ", At time: " + i);
                         }
                     }
@@ -1714,21 +1726,25 @@ namespace CPF_experiment
                                                 /*    ||
                                                 (nextNextAgentAtLocation != -1 && nextNextAgentAtLocation != aMoveIndex)*/)   //the next agent at location not there right now or there and delayed or not the after next at location or his next step is to stay
                                             {
-                                                Console.WriteLine("Next Agent at location: " + locationsAtTime[nextAgentAtLocation].x + "," + locationsAtTime[nextAgentAtLocation].y + " should be " +nextAgentAtLocation);
+                                                if (toPrint)
+                                                    Console.WriteLine("Next Agent at location: " + locationsAtTime[nextAgentAtLocation].x + "," + locationsAtTime[nextAgentAtLocation].y + " should be " +nextAgentAtLocation);
                                                 delayMoves.Add((Move)aMove);
                                                 delayAgents.Add(aMoveIndex);
                                                 newInformation = true;
-                                                Console.WriteLine("***** MCP REPAIR ***** Add delay to agent " + aMoveIndex + " at time " + i);
+                                                if (toPrint)
+                                                    Console.WriteLine("***** MCP REPAIR ***** Add delay to agent " + aMoveIndex + " at time " + i);
                                                 replanCounter++;
                                                 writeLineToLog("***** MCP REPAIR *****");
                                             }
                                             else if (nextNextAgentAtLocation != -1 && nextNextAgentAtLocation != aMoveIndex)   //the next agent at location not there right now or there and delayed or not the after next at location
                                             {
-                                                Console.WriteLine("Next Agent at location: " + locationsAtTime[nextAgentAtLocation].x + "," + locationsAtTime[nextAgentAtLocation].y + " should be " + nextAgentAtLocation);
+                                                if (toPrint)
+                                                    Console.WriteLine("Next Agent at location: " + locationsAtTime[nextAgentAtLocation].x + "," + locationsAtTime[nextAgentAtLocation].y + " should be " + nextAgentAtLocation);
                                                 delayMoves.Add((Move)aMove);
                                                 delayAgents.Add(aMoveIndex);
                                                 newInformation = true;
-                                                Console.WriteLine("***** MCP REPAIR ***** Add delay to agent " + aMoveIndex + " at time " + i);
+                                                if (toPrint)
+                                                    Console.WriteLine("***** MCP REPAIR ***** Add delay to agent " + aMoveIndex + " at time " + i);
                                                 replanCounter++;
                                                 writeLineToLog("***** MCP REPAIR *****");
                                             }
@@ -1749,7 +1765,8 @@ namespace CPF_experiment
                                 if(x != nextMove[aMoveIndex].x || y != nextMove[aMoveIndex].y )
                                 {
                                     McpGraph[agentLocation].RemoveFirst();
-                                    Console.WriteLine("Remove: Agent "+ aMoveIndex + "  at time +" + i + "  from loc "+ x +","+ y);
+                                    if (toPrint)
+                                        Console.WriteLine("Remove: Agent "+ aMoveIndex + "  at time +" + i + "  from loc "+ x +","+ y);
                                 }
                         }
                     }
@@ -1774,7 +1791,8 @@ namespace CPF_experiment
                             additionalDelayAgents.Add(locationsAtTime.IndexOf((Move)aMove));
                         }
                         agentDelay(additionalDelayAgents, delayMoves, runner, locationsAtTime, i);
-                        Console.WriteLine("***** REPAIR *****");
+                        if (toPrint)
+                            Console.WriteLine("***** REPAIR *****");
                         writeLineToLog("***** REPAIR *****");
                         replanCounter++;
                         writeLineToLog("Delay all agents at time: " + i);
@@ -1789,7 +1807,8 @@ namespace CPF_experiment
                         if (checkIfWillCollide(LinkedListCopy, i))
                         {
                             writeLineToLog("Check colliding plan:");
-                            printLinkedList(LinkedListCopy, WRITE_LOG);
+                            if(toPrint)
+                                printLinkedList(LinkedListCopy, WRITE_LOG);
                             //runner.plan.locationsAtTimes = copyLinkedList(LinkedListCopy);
                             // Console.WriteLine("***** REPAIR *****");
                             //replanCounter++;
@@ -1802,7 +1821,8 @@ namespace CPF_experiment
                                 additionalDelayAgents.Add(locationsAtTime.IndexOf((Move)aMove));
                             }
                             agentDelay(additionalDelayAgents, delayMoves, runner, locationsAtTime, i);
-                            Console.WriteLine("***** REPAIR *****");
+                            if (toPrint)
+                                Console.WriteLine("***** REPAIR *****");
                             replanCounter++;
                             writeLineToLog("***** REPAIR *****");
                             writeLineToLog("Delay all agents at time: " + i);
@@ -1835,7 +1855,8 @@ namespace CPF_experiment
                     (policy == ExecutePolicy.Stressful      && delayMoves.Count > 0)                ||  
                     (policy == ExecutePolicy.Reasonable     && checkIfWillCollide(runner.plan.locationsAtTimes, i))) //i != 0 &&
                 {
-                    Console.WriteLine("***** REPLAN *****");
+                    if(toPrint)
+                        Console.WriteLine("***** REPLAN *****");
                     writeLineToLog("***** REPLAN *****");
                     //printLinkedList(newPaths);
                     replanCounter++;
@@ -1941,7 +1962,8 @@ namespace CPF_experiment
                             Move agent2 = biasMove[bMove];
                             if (agent1.IsColliding(agent2))
                             {
-                                Console.WriteLine("Agents " + aMove + " and " + bMove + " collides at time " + i + " bias " + j);
+                                if (toPrint)
+                                    Console.WriteLine("Agents " + aMove + " and " + bMove + " collides at time " + i + " bias " + j);
                                 valid = false;
                             }
                         }
@@ -1951,10 +1973,16 @@ namespace CPF_experiment
                 if (node != null)
                     cur  = node.Value;
             }
-            if(valid)
-                Console.WriteLine("A valid bias plan!");
+            if (valid)
+            {
+                if (toPrint)
+                    Console.WriteLine("A valid bias plan!");
+            }
             else
-                Console.WriteLine("Not a valid bias plan!");
+            {
+                //if (toPrint)
+                    Console.WriteLine("Not a valid bias plan!");
+            }
             return valid;
         }
 
@@ -1973,14 +2001,16 @@ namespace CPF_experiment
                 {
                     if (!isFollowingMove(pre[aMove], cur[aMove]))
                     {
-                        Console.WriteLine("Agent: " + aMove + ", at time " + (i-1) + " at " + pre[aMove] + "and at time " + i + " at " + cur[aMove]);
+                        if(toPrint)
+                            Console.WriteLine("Agent: " + aMove + ", at time " + (i-1) + " at " + pre[aMove] + "and at time " + i + " at " + cur[aMove]);
                         valid = false;
                     }
                     for(int bMove = aMove + 1; bMove < cur.Count; bMove++)
                     {
                         if (pre[aMove].IsColliding(pre[bMove]))
                         {
-                            Console.WriteLine("Agents: " + aMove + " and " + bMove + " collides at time " + i);
+                            if (toPrint)
+                                Console.WriteLine("Agents: " + aMove + " and " + bMove + " collides at time " + i);
                             valid = false;
                         }
                     }
@@ -1994,15 +2024,19 @@ namespace CPF_experiment
                     if (sOriginal.x != sNew.x || sOriginal.y != sNew.y ||
                         gOriginal.x != gNew.x || gOriginal.y != gNew.y)
                     {
-                        Console.WriteLine("wrong start or goal");
+                        if (toPrint)
+                            Console.WriteLine("wrong start or goal");
                         valid = false;
                     }
                 }
             }
-            if(valid)
-                Console.WriteLine("A valid execution!");
-            else
-                Console.WriteLine("Not a valid execution!");
+            if (toPrint)
+            {
+                if (valid)
+                    Console.WriteLine("A valid execution!");
+                else
+                    Console.WriteLine("Not a valid execution!");
+            }
             return valid;
         }
 
@@ -2179,9 +2213,12 @@ namespace CPF_experiment
             {
                 if (checkIfColide(node.Value))
                 {
-                    Console.WriteLine("***** NOW AT TIME: " + current + "*****");
+                    if (toPrint)
+                    {
+                        Console.WriteLine("***** NOW AT TIME: " + current + "*****");
+                        printLinkedList(lLocations, WRITE_LOG);
+                    }
                     writeLineToLog("***** NOW AT TIME: " + current + "*****");
-                    printLinkedList(lLocations, WRITE_LOG);
                     return true;
                 }
                 node = node.Next;
@@ -2445,7 +2482,6 @@ namespace CPF_experiment
                             lastMoveChangeAgents.Add(agentIndex);
                         }
                         agentToMove[agentIndex]     = new TimedMove((TimedMove)locations[agentIndex]);
-                        //agentToMove[agentIndex]     = new TimedMove((TimedMove)locations.ElementAt<Move>(agentIndex));
                         locations[agentIndex]       = new TimedMove((TimedMove)previousToMove[agentIndex]);
                         previousToMove[agentIndex]  = new TimedMove((TimedMove)agentToMove[agentIndex]);
                     }

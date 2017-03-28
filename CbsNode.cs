@@ -323,10 +323,12 @@ namespace CPF_experiment
 
             if (!success)
                 return false;
-            printLinkedList(singleAgentPathsToList(allSingleAgentPlans));
-            
-            printConflicts(allSingleAgentPlans);
-            Console.WriteLine("");
+            if (Run.toPrint)
+            {
+                printLinkedList(singleAgentPathsToList(allSingleAgentPlans));
+                printConflicts(allSingleAgentPlans);
+                Console.WriteLine("");
+            }
             // Update conflict counts: All agents but the last saw an incomplete CAT. Update counts backwards.
             for (int i = this.conflictCountsPerAgent.Length - 1; i >= 0; i--)
             {
@@ -360,7 +362,8 @@ namespace CPF_experiment
                     }
                 }
             }
-            printConflicts(allSingleAgentPlans);
+            if(Run.toPrint)
+                printConflicts(allSingleAgentPlans);
             this.CountConflicts();
 
             this.CalcMinOpsToSolve();
@@ -395,7 +398,7 @@ namespace CPF_experiment
                             move = allSingleAgentPlans[agentDictionaryIndex].locationAtTimes[allSingleAgentPlans[agentDictionaryIndex].locationAtTimes.Count - 1];
                         else
                             move = allSingleAgentPlans[agentDictionaryIndex].locationAtTimes[agentTimesDictionaryList[i]];
-                        Console.WriteLine("Agent " + agentDictionaryIndex + " Collindeing Agent " + key + " At Time " + agentTimesDictionaryList[i] + " Bias " + agentTimesBiasDictionaryList[i] + " Location " + move);
+                        Console.WriteLine("Agent " + agentDictionaryIndex + " Collinding Agent " + key + " At Time " + agentTimesDictionaryList[i] + " Bias " + agentTimesBiasDictionaryList[i] + " Location " + move);
                     }
                 }
             }
@@ -673,6 +676,30 @@ namespace CPF_experiment
                 this.allSingleAgentCosts[agentIndex] = singleCosts[i];
                 if (i == 0) // This is the group representative
                 {
+                    foreach (int conflictAgent in this.conflictTimesPerAgent[agentIndex].Keys)
+                        for(int timeIndex = 0; timeIndex < conflictTimesPerAgent[agentIndex][conflictAgent].Count; timeIndex++)
+                        {
+                            int time = conflictTimesPerAgent[agentIndex][conflictAgent][timeIndex];
+                            if(time == 0)
+                            {
+                                if (perAgent.Keys.Contains(conflictAgent))
+                                {
+                                    perAgent[conflictAgent]++;
+                                    conflictTimes[conflictAgent].Add(0);
+                                    conflictTimesBias[conflictAgent].Add(conflictTimesBiasPerAgent[agentIndex][conflictAgent][timeIndex]);
+                                }
+                                else
+                                {
+                                    perAgent.Add(conflictAgent, 1);
+                                    List<int> newTimeList = new List<int>();
+                                    newTimeList.Add(0);
+                                    List<int> newTimeBiasList = new List<int>();
+                                    newTimeBiasList.Add(conflictTimesBiasPerAgent[agentIndex][conflictAgent][timeIndex]);
+                                    conflictTimes.Add(conflictAgent, newTimeList);
+                                    conflictTimesBias.Add(conflictAgent, newTimeBiasList);
+                                }
+                            }
+                        }
                     this.conflictCountsPerAgent[agentIndex] = perAgent;
                     this.conflictTimesPerAgent[agentIndex] = conflictTimes;
                     this.conflictTimesBiasPerAgent[agentIndex] = conflictTimesBias;
@@ -1748,20 +1775,23 @@ namespace CPF_experiment
 
             groupRepA = -1; // To quiet the compiler
             groupRepB = -1; // To quiet the compiler
-            time = int.MaxValue;
+            time  = int.MaxValue;
             time2 = int.MaxValue;
             for (int i = 0; i < this.conflictTimesPerAgent.Length; i++)
             {
                 foreach (var otherAgentNumAndConflictTimes in this.conflictTimesPerAgent[i])
                 {
-                    if (otherAgentNumAndConflictTimes.Value[0] < time)
+                    //foreach (int conflictTime in otherAgentNumAndConflictTimes.Value)
+                    for (int conflictTimeIndex = 0; conflictTimeIndex < otherAgentNumAndConflictTimes.Value.Count; conflictTimeIndex++)
                     {
-                        //time2
-                        
-                        time = otherAgentNumAndConflictTimes.Value[0];
-                        time2 = time + this.conflictTimesBiasPerAgent[i][otherAgentNumAndConflictTimes.Key][0];
-                        groupRepA = i;
-                        groupRepB = this.agentNumToIndex[otherAgentNumAndConflictTimes.Key];
+                        int conflictTime = otherAgentNumAndConflictTimes.Value[conflictTimeIndex];
+                        if (conflictTime < time)   //if (otherAgentNumAndConflictTimes.Value[0] < time)
+                        {
+                            time = conflictTime;    //time  = otherAgentNumAndConflictTimes.Value[0];
+                            time2 = time + this.conflictTimesBiasPerAgent[i][otherAgentNumAndConflictTimes.Key][conflictTimeIndex];   //time2 = time + this.conflictTimesBiasPerAgent[i][otherAgentNumAndConflictTimes.Key][0];
+                            groupRepA = i;
+                            groupRepB = this.agentNumToIndex[otherAgentNumAndConflictTimes.Key];
+                        }
                     }
                 }
             }

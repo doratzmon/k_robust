@@ -2114,7 +2114,7 @@
             This class is responsible for running the experiments.
             </summary>
         </member>
-        <member name="F:CPF_experiment.Run.upperB">
+        <member name="F:CPF_experiment.Run.toPrint">
             <summary>
             Delimiter character used when writing the results of the runs to the output file.
             </summary>

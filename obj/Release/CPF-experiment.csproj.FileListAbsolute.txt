@@ -12,3 +12,17 @@ C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF_experiment.Properties.Resou
 C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
 C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\d0.exe
 C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\d0.pdb
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.exe.config
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.xml
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\d0.exe
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\d0.pdb
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.exe
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.pdb
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Bson.dll
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Driver.Core.dll
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Driver.dll
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Bson.xml
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Driver.xml
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\CPF_experiment.Properties.Resources.resources
+C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
