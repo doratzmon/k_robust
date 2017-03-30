@@ -760,9 +760,9 @@ namespace CPF_experiment
             //bool runGrids = false;
             //bool runDragonAge = true;
             bool runDragonAge = false;
-            bool runGrids = true;
+            bool runGrids = false;
             bool runMazesWidth1 = false;
-            bool runSpecific = false;
+            bool runSpecific = true;
 
             if (runGrids == true)
             {
@@ -789,7 +789,6 @@ namespace CPF_experiment
                 me.RunDragonAgeExperimentSet(instances, Program.mazeMapFilenames); // Obstacle percents and grid sizes built-in to the maps.
             else if (runSpecific == true)
             {
-                me.RunInstance("Instance-8-20-6-27");
                 //me.RunInstance("Instance-5-15-3-792");
                 //me.RunInstance("Instance-5-15-3-792-4rows");
                 //me.RunInstance("Instance-5-15-3-792-3rows");
