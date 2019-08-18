@@ -120,8 +120,7 @@ namespace CPF_experiment
 
         protected override List<WorldState> ExpandOneAgent(List<WorldState> intermediateNodes, int agentIndex)
         {
-            if (Run.replanTime > Run.TIMEOUT)
-                throw new Exception("6");
+
             // Expand the agent
             List<WorldState> generated = base.ExpandOneAgent(intermediateNodes, agentIndex);
             

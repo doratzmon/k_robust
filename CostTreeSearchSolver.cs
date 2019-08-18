@@ -167,6 +167,11 @@ namespace CPF_experiment
             throw new NotImplementedException();
         }
 
+        public Dictionary<int, List<double>> GetConflictProbability()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void OutputStatisticsHeader(TextWriter output)
         {
             output.Write(this.ToString() + " Expanded (HL)");

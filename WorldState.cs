@@ -112,7 +112,7 @@ namespace CPF_experiment
             this.goalSingleCosts = null;
             this.singlePlans = null;
             this.hBonus = 0;
-            this.conflictRange = conflictRange;
+            this.conflictRange = cpy.conflictRange;
         }
 
         /// <summary>
@@ -248,6 +248,7 @@ namespace CPF_experiment
         public virtual int CompareTo(IBinaryHeapItem other)
         {
             WorldState that = (WorldState)other;
+
             int thisF = this.h + this.g;
             int thatF = that.h + that.g;
             if (thisF < thatF)
@@ -302,6 +303,7 @@ namespace CPF_experiment
 
             return 0;
         }
+
 
         /// <summary>
         /// Calculate and set the g of the state as the sum of the different agent g values.
@@ -425,7 +427,7 @@ namespace CPF_experiment
         /// <param name="conflictAvoidance"></param>
         /// <returns></returns>
         public virtual void UpdateConflictCounts(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance, int conflictRange = 0)
-        {
+        {            
             for (int i = 0; i < this.allAgentsState.Length; i++)
             {
                 this.allAgentsState[i].lastMove.UpdateConflictCounts(conflictAvoidance, this.cbsInternalConflicts, this.conflictTimes, this.conflictTimesBias, conflictRange);

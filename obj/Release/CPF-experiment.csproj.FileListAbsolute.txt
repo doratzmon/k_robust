@@ -1,28 +1,52 @@
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.exe.config
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.xml
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.exe
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\d0.pdb
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Bson.dll
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Driver.Core.dll
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Driver.dll
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Bson.xml
-C:\Users\dorat\Documents\GitHub\MAPF\bin\Release\MongoDB.Driver.xml
-C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
-C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF_experiment.Properties.Resources.resources
-C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
-C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\d0.exe
-C:\Users\dorat\Documents\GitHub\MAPF\obj\Release\d0.pdb
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.exe.config
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.xml
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\d0.exe
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\d0.pdb
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.exe
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\d0.pdb
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Bson.dll
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Driver.Core.dll
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Driver.dll
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Bson.xml
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\bin\Release\MongoDB.Driver.xml
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\CPF_experiment.Properties.Resources.resources
-C:\Users\Dor Atzmon\Desktop\block\eli.boyarski-mapf-be092f67837b\MAPF\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\d0.exe.config
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\d0.xml
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\obj\Release\d0.exe
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\obj\Release\d0.pdb
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\d0.exe
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\d0.pdb
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Bson.dll
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Driver.Core.dll
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Driver.dll
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Bson.xml
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Driver.xml
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\obj\Release\CPF_experiment.Properties.Resources.resources
+C:\Users\Dor Atzmon\Desktop\pRobust\MAPF - Copy\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
+F:\desktop\pRobust\MAPF - Copy\bin\Release\d0.exe.config
+F:\desktop\pRobust\MAPF - Copy\bin\Release\d0.xml
+F:\desktop\pRobust\MAPF - Copy\obj\Release\d0.exe
+F:\desktop\pRobust\MAPF - Copy\obj\Release\d0.pdb
+F:\desktop\pRobust\MAPF - Copy\bin\Release\d0.exe
+F:\desktop\pRobust\MAPF - Copy\bin\Release\d0.pdb
+F:\desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Bson.dll
+F:\desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Driver.Core.dll
+F:\desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Driver.dll
+F:\desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Bson.xml
+F:\desktop\pRobust\MAPF - Copy\bin\Release\MongoDB.Driver.xml
+F:\desktop\pRobust\MAPF - Copy\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
+F:\desktop\pRobust\MAPF - Copy\obj\Release\CPF_experiment.Properties.Resources.resources
+F:\desktop\pRobust\MAPF - Copy\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\d0.exe.config
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\d0.xml
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\d0.exe
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\d0.pdb
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\MongoDB.Bson.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\MongoDB.Driver.Core.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\MongoDB.Driver.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\MongoDB.Bson.xml
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\MongoDB.Driver.xml
+C:\Users\USER\Documents\GitHub\pRobust\obj\Release\CPF-experiment.csprojResolveAssemblyReference.cache
+C:\Users\USER\Documents\GitHub\pRobust\obj\Release\CPF_experiment.Properties.Resources.resources
+C:\Users\USER\Documents\GitHub\pRobust\obj\Release\CPF-experiment.csproj.GenerateResource.Cache
+C:\Users\USER\Documents\GitHub\pRobust\obj\Release\CPF-experiment.csproj.CoreCompileInputs.cache
+C:\Users\USER\Documents\GitHub\pRobust\obj\Release\d0.exe
+C:\Users\USER\Documents\GitHub\pRobust\obj\Release\d0.pdb
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.dll.config
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.Math.Core.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.Math.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.Statistics.dll
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.xml
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.Math.xml
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.Math.Core.xml
+C:\Users\USER\Documents\GitHub\pRobust\bin\Release\Accord.Statistics.xml

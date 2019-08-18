@@ -212,7 +212,7 @@ namespace CPF_experiment
             return this.conflictTimesBias;
         }
 
-
+    
         
         protected void ClearPrivateStatistics()
         {
@@ -417,29 +417,6 @@ namespace CPF_experiment
                     Debug.WriteLine("Expanding node: " + currentNode);
                 }
 
-                //if (this.instance.m_vAgents.Length > 2)
-                //{
-                //    int a = 3;
-                //    int b = (a + 2) * 2;
-
-                //    int x1, x2, x3, y1, y2, y3, x4, y4;
-                //    x1 = 5; y1 = 3;
-                //    x2 = 5; y2 = 4;
-                //    x3 = 6; y3 = 2;
-                //    x4 = 5; y4 = 7;
-                //    if (currentNode.allAgentsState[0].lastMove.x == x1 &&
-                //        currentNode.allAgentsState[0].lastMove.y == y1 &&
-                //        currentNode.allAgentsState[1].lastMove.x == x2 &&
-                //        currentNode.allAgentsState[1].lastMove.y == y2 &&
-                //        currentNode.allAgentsState[2].lastMove.x == x3 &&
-                //        currentNode.allAgentsState[2].lastMove.y == y3 &&
-                //        currentNode.allAgentsState[3].lastMove.x == x4 &&
-                //        currentNode.allAgentsState[3].lastMove.y == y4)
-                //    {
-                //        int c = 3;
-                //        int d = 3 * c;
-                //    }
-                //}
 
                 if (this.mstar == false) // Backpropagation can cause the root to be re-expanded after many more expensive nodes were expanded.
                     ;// Console.WriteLine("fix!!");
@@ -459,6 +436,9 @@ namespace CPF_experiment
                 // Check if node is the goal, or knows how to get to it
                 if (currentNode.GoalTest())
                 {
+                    this.conflictTimes = currentNode.conflictTimes;
+                    this.conflictTimesBias = currentNode.conflictTimesBias;
+
                     this.totalCost = currentNode.GetGoalCost();
                     this.singleCosts = currentNode.GetSingleCosts();
                     this.solution = currentNode.GetPlan();
@@ -476,7 +456,6 @@ namespace CPF_experiment
                 {
                     if (this.debug)
                         Debug.Print("");
-                    //Expand(currentNode);
                 }
                 else
                 {
@@ -503,8 +482,6 @@ namespace CPF_experiment
                     ++this.mstarBackprops;
                     foreach (var conflict in this.mstarBackPropagationConflictList)
                     {
-                        //currentNode.individualMStarPlans[conflict.agentAIndex] = null;
-                        //currentNode.individualMStarPlans[conflict.agentBIndex] = null;
                         this.RMStarCollisionBackPropagation(conflict, currentNode);
                     }
                     this.mstarBackPropagationConflictList.Clear();
@@ -532,8 +509,6 @@ namespace CPF_experiment
             {
                 if (runner.ElapsedMilliseconds() > Constants.MAX_TIME)
                     return;
-
-                //Debug.Print("Moving {0} agent", agentIndex);
 
                 intermediateNodes = ExpandOneAgent(intermediateNodes, agentIndex);
             }
@@ -599,8 +574,6 @@ namespace CPF_experiment
             // Enter the generated nodes into the open list
             foreach (var child in finalGeneratedNodes)
             {
-               /* if (Program.TO_EXECUTE && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
-                    throw new Exception("4");*/
                 ProcessGeneratedNode(child);
             }
 
@@ -817,39 +790,11 @@ namespace CPF_experiment
                 if (agentInCollisionSet == false) // Only one move allowed
                 {
                     bool hasPlan = true;
-                    //// if the agent doesn't have a planned route, give it a planned route, 
-                    ////if (fromNode.individualMStarPlanBases[agentIndex] == null) // No parent plan ever
-                    //if (fromNode.individualMStarPlans[agentIndex] == null) // need to give this agent a plan
-                    //{
-                    //    //fromNode.individualMStarPlanBases[agentIndex] = fromNode;
-                    //    fromNode.individualMStarBookmarks[agentIndex] = 0;
-                    //    //if (this.mstarPlanBasesToTheirPlans.ContainsKey(fromNode) == false)
-                    //    //    this.mstarPlanBasesToTheirPlans[fromNode] = new SinglePlan[this.instance.GetNumOfAgents()];
-                    //    if (fromNode.individualMStarPlans == null)
-                    //        fromNode.individualMStarPlans = new SinglePlan[this.instance.GetNumOfAgents()];
 
-                    //    hasPlan = this.solveOneAgentForMstar(fromNode, agentIndex);
-
-                    //    //if (hasPlan == false)
-                    //    //    this.mstarPlanBasesToTheirPlans[fromNode][agentIndex] = null;
-
-                    //    if (this.debug)
-                    //    {
-                    //        Debug.Print("Agent {0} plan:", agentIndex);
-                    //        //Debug.Print(this.mstarPlanBasesToTheirPlans[fromNode.individualMStarPlanBases[agentIndex]][agentIndex].ToString());
-                    //        Debug.Print(fromNode.individualMStarPlans[agentIndex].ToString());
-                    //    }
-                    //}
 
                     if (hasPlan)
                     {
-                        // If this move isn't its individually optimal one according to its planned route, return false.
-                        ////var planBase = fromNode.individualMStarPlanBases[agentIndex];
-                        ////var plan = this.mstarPlanBasesToTheirPlans[planBase][agentIndex];
-                        //var plan = fromNode.individualMStarPlans[agentIndex];
-                        //Move allowed = plan.GetLocationAt(fromNode.individualMStarBookmarks[agentIndex] + 1);
-                        //if (possibleMove.Equals(allowed) == false)
-                        //    return false;
+
                         if (this.instance.GetSingleAgentOptimalMove(fromNode.allAgentsState[agentIndex]).Equals(possibleMove) == false)
                             return false;
                     }
@@ -868,9 +813,6 @@ namespace CPF_experiment
                     int collidingAgentIndex = collidingWith[0];
 
                     bool otherAgentInColSet = fromNode.collisionSets.IsSingle(collidingAgentIndex);
-                                                //fromNode.currentCollisionSet.Contains(collidingAgentIndex);// ||
-                                              //(fromNode.individualMStarPlanBases[collidingAgentIndex] != null &&
-                                               //this.mstarPlanBasesToTheirPlans[fromNode.individualMStarPlanBases[collidingAgentIndex]][collidingAgentIndex] == null); // Parent plan was abandoned;
 
                     // Check if one of the colliding agents isn't in the collision set yet
                     if (agentInCollisionSet == false || 
@@ -884,50 +826,7 @@ namespace CPF_experiment
                                 intermediateMode.allAgentsState[collidingAgentIndex].lastMove, makespan);
                         if (this.debug)
                             Debug.Print(conflict.ToString());
-                        //if (this.doMstarShuffle && agentInCollisionSet == false)
-                        //{
-                        //    ++this.mstarShuffles;
-                        //    WorldState planStart = fromNode.GetPlanStart(agentIndex);
-                        //    success = this.RMStarShuffleIndividualPath(conflict, true, planStart);
-                        //    if (success)
-                        //    {
-                        //        //this.reinsertIntoOpenList(fromNode.individualMStarPlanBases[agentIndex]);
-                        //        this.reinsertIntoOpenList(planStart);
-                        //        if (this.debug)
-                        //        {
-                        //            Debug.Print("Agent {0} new plan:", agentIndex);
-                        //            //Debug.Print(this.mstarPlanBasesToTheirPlans[fromNode.individualMStarPlanBases[agentIndex]][agentIndex].ToString());
-                        //            Debug.Print(fromNode.individualMStarPlans[agentIndex].ToString());
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        if (this.debug)
-                        //            Debug.Print("Replanning Agent {0} for the same cost failed", agentIndex);
-                        //    }
-                        //}
-                        //if (this.doMstarShuffle && success == false && otherAgentInColSet == false)
-                        //{
-                        //    ++this.mstarShuffles;
-                        //    WorldState planStart = fromNode.GetPlanStart(collidingAgentIndex);
-                        //    success = this.RMStarShuffleIndividualPath(conflict, false, planStart);
-                        //    if (success)
-                        //    {
-                        //        //this.reinsertIntoOpenList(fromNode.individualMStarPlanBases[collidingAgentIndex]);
-                        //        this.reinsertIntoOpenList(planStart);
-                        //        if (this.debug)
-                        //        {
-                        //            Debug.Print("Agent {0} new plan:", collidingAgentIndex);
-                        //            //Debug.Print(this.mstarPlanBasesToTheirPlans[fromNode.individualMStarPlanBases[collidingAgentIndex]][collidingAgentIndex].ToString());
-                        //            Debug.Print(fromNode.individualMStarPlans[collidingAgentIndex].ToString());
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        if (this.debug)
-                        //            Debug.Print("Replanning Agent {0} for the same cost failed", collidingAgentIndex);
-                        //    }
-                        //}
+                       
                         if (success == false)
                         {
                             this.mstarBackPropagationConflictList.Add(conflict);
@@ -983,8 +882,6 @@ namespace CPF_experiment
         /// <returns></returns>
         protected virtual bool ProcessGeneratedNode(WorldState currentNode)
         {
-            /*if (Program.TO_EXECUTE && Run.replanStopwath.ElapsedMilliseconds > Run.TIMEOUT)
-                throw new Exception("5");*/
             if (currentNode.h + currentNode.g <= this.maxCost)
             // Assuming h is an admissable heuristic, no need to generate nodes that won't get us to the goal
             // within the budget
@@ -1061,20 +958,8 @@ namespace CPF_experiment
                                 inClosedList.backPropagationSet.Add(parent);
                             currentNode.backPropagationSet = inClosedList.backPropagationSet;
 
-                            //// Copy relavant individual paths
-                            //for (int i = 0; i < this.instance.GetNumOfAgents(); i++)
-                            //{
-                            //    if (inClosedList.individualMStarPlanBases[i] != null &&
-
-                            //        currentNode.individualMStarPlanBases[i] == null) // In the case where both nodes have a plan for an agent, arbitrarily choose currentNode's
-                            //    {
-                            //        currentNode.individualMStarPlanBases[i] = inClosedList.individualMStarPlanBases[i];
-                            //        currentNode.individualMStarBookmarks[i] = inClosedList.individualMStarBookmarks[i];
-                            //    }
-                            //}
                         }
 
-                        //inClosedList.collisionSets.CopyUnions(currentNode.collisionSets); // Not necessary - currentNode has no unions yet
                         currentNode.collisionSets = inClosedList.collisionSets;
                         RMStarCollisionBackPropagation(currentNode.collisionSets, currentNode.prevStep); // The collision sets are information about the future,
                                                                                                          // not the past, so they should 
@@ -1145,26 +1030,7 @@ namespace CPF_experiment
 
                 if (this.closedList.ContainsKey(currentNode) == false)
                 {
-                    //if (this.instance.m_vAgents.Length > 2)
-                    //{
-                    //    int a = 3;
-                    //    int b = (a + 2) * 2;
-
-                    //    int x1, x2, x3, y1, y2, y3;
-                    //    x1 = 5; y1 = 3;
-                    //    x2 = 2; y2 = 4;
-                    //    x3 = 2; y3 = 2;
-                    //    if (currentNode.allAgentsState[0].lastMove.x == x1 &&
-                    //        currentNode.allAgentsState[0].lastMove.y == y1 &&
-                    //        currentNode.allAgentsState[1].lastMove.x == x2 &&
-                    //        currentNode.allAgentsState[1].lastMove.y == y2 &&
-                    //        currentNode.allAgentsState[2].lastMove.x == x3 &&
-                    //        currentNode.allAgentsState[2].lastMove.y == y3)
-                    //    {
-                    //        int c = 3;
-                    //        int d = 3 * c;
-                    //    }
-                    //}
+                   
 
                     this.closedList.Add(currentNode, currentNode);
                     this.generated++; // Reopened nodes are also recounted here.
@@ -1188,95 +1054,6 @@ namespace CPF_experiment
             return false;
         }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="agentIndex"></param>
-        ///// <param name="fromNode"></param>
-        ///// <returns>Whether the shuffle succeeded</returns>
-        //bool RMStarShuffleIndividualPath(CbsConflict conflict, bool agentA, WorldState fromNode)
-        //{
-        //    int agentIndex = agentA ? conflict.agentAIndex : conflict.agentBIndex;
-        //    //WorldState node = fromNode.individualMStarPlanBases[agentIndex];
-        //    WorldState node = fromNode;
-
-        //    if (this.mstarPlanBasesToTheirConstraints.ContainsKey(node) == false)
-        //        this.mstarPlanBasesToTheirConstraints[node] = new HashSet<CbsConstraint>[this.instance.GetNumOfAgents()];
-        //    if (this.mstarPlanBasesToTheirConstraints[node][agentIndex] == null)
-        //        this.mstarPlanBasesToTheirConstraints[node][agentIndex] = new HashSet<CbsConstraint>();
-
-        //    return solveOneAgentForMstar(node, conflict, agentA);
-        //}
-
-        //protected bool solveOneAgentForMstar(WorldState node, CbsConflict conflict, bool agentA)
-        //{
-        //    int agentIndex = agentA ? conflict.agentAIndex : conflict.agentBIndex;
-        //    HashSet_U<CbsConstraint> constraints = null;
-        //    HashSet<CbsConstraint> newConstraints = null;
-        //    int oldMaxCost = int.MaxValue;
-        //    if (this.instance.parameters.ContainsKey(CBS_LocalConflicts.CONSTRAINTS))
-        //        constraints = (HashSet_U<CbsConstraint>)this.instance.parameters[CBS_LocalConflicts.CONSTRAINTS];
-        //    else
-        //    {
-        //        constraints = new HashSet_U<CbsConstraint>();
-        //        this.instance.parameters[CBS_LocalConflicts.CONSTRAINTS] = constraints;
-        //    }
-
-        //    if (this.instance.parameters.ContainsKey(CBS_LocalConflicts.CAT) == false)
-        //        this.instance.parameters[CBS_LocalConflicts.CAT] = new Dictionary_U<TimedMove, int>(); // Indicate TO CBS that another level is running above it
-
-        //    if (this.debug)
-        //    {
-        //        Debug.Print("Planning for agent index: " + agentIndex + " in node: " + node);
-        //    }
-            
-        //    newConstraints = this.mstarPlanBasesToTheirConstraints[node][agentIndex];
-        //    CbsConstraint newConstraint = new CbsConstraint(conflict, this.instance, agentA);
-        //    newConstraints.Add(newConstraint);
-        //    constraints.Join(newConstraints);
-
-        //    if (this.debug)
-        //    {
-        //        Debug.Print("Constraints: ");
-        //        foreach (var constraint in newConstraints)
-        //        {
-        //            Debug.Print(constraint.ToString());
-        //        }
-        //    }
-            
-        //    oldMaxCost = this.maxCost;
-        //    //this.instance.parameters[IndependenceDetection.MAXIMUM_COST_KEY] = this.mstarPlanBasesToTheirPlans[node][agentIndex].GetSize() - 1;
-        //    this.instance.parameters[IndependenceDetection.MAXIMUM_COST_KEY] = node.individualMStarPlans[agentIndex].GetSize() - 1;
-
-        //    bool success = solveOneAgentForMstar(node, agentIndex);
-
-        //    constraints.Separate(newConstraints);
-        //    this.instance.parameters[IndependenceDetection.MAXIMUM_COST_KEY] = oldMaxCost;
-        //    this.instance.parameters.Remove(CBS_LocalConflicts.CAT);
-
-        //    return success;
-        //}
-
-        //protected bool solveOneAgentForMstar(WorldState node, int agentIndex)
-        //{
-        //    AgentState[] thisAgentOnly = new AgentState[1];
-        //    thisAgentOnly[0] = node.allAgentsState[agentIndex];
-        //    var subProblem = this.instance.Subproblem(thisAgentOnly);
-
-        //    ClassicAStar astar = new ClassicAStar(this.heuristic);
-        //    ICbsSolver solver = new CBS_LocalConflicts(astar, astar); // Uses a precomputed solution if possible
-        //    solver.Setup(subProblem, this.runner);
-        //    bool success = solver.Solve();
-
-        //    if (success)
-        //    {
-        //        //this.mstarPlanBasesToTheirPlans[node][agentIndex] = solver.GetSinglePlans()[0];
-        //        node.individualMStarPlans[agentIndex] = solver.GetSinglePlans()[0];
-        //    }
-        //    // else nothing. Don't null the old plan yet - it might be saved by a successful replan of the other agent
-
-        //    return success;
-        //}
 
         /// <summary>
         /// NOT the algorithm in the M* journal paper.

@@ -1,0 +1,18 @@
+To do list
+----------
+
+1. In Run() we choose our solver. We need to add to the CBS constructor a 
+new parameter to mark that we in our new MAPF variant.
+
+2. Change ClassicASrar expansion such that a location will not be visited
+if we've already been there in the last k previous locations.
+
+3. In TimeMove.UpdateConflictCount we identify conflicts (conflictRange parameter represents the k
+value of k robust, you can use it). We need to add our new conflict type in case the search is in
+our MAPF variant and we identify this new conlict.
+
+4. In CbsConstraint constructor we define our constraint. Again, we meed to mark the cbs constraint
+in case this is our variant and this is the new type of constraint.
+
+5. In cbsNode.GetConstraints we collect all the constraints from our cbs node ancestors.
+Here, in case it is the new type of constraint we need define exactly the agent restrictions.

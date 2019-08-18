@@ -76,6 +76,7 @@ namespace CPF_experiment
         Dictionary<int, List<int>> GetConflictTimes();
 
         Dictionary<int, List<int>> GetConflictTimesBias();
+
         int GetAccumulatedExpanded();
         int GetAccumulatedGenerated();
     }

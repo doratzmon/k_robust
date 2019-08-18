@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CPF_experiment
@@ -297,34 +298,50 @@ namespace CPF_experiment
             else
                 return TimedMove.emptyList;
         }
-
+        
         public void UpdateConflictCounts(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance,
                                          Dictionary<int, int> conflictCounts, Dictionary<int, List<int>> conflictTimes, Dictionary<int, List<int>> conflictTimesBias, int conflictRange = 0)
         {
             int saveTime = this.time;
-
-            for (int biasTime = saveTime - conflictRange; biasTime < saveTime + conflictRange + 1; biasTime++)
-            {
-                this.time = biasTime;
-                List<int> colliding = this.GetColliding(conflictAvoidance);
-                foreach (int agentNum in colliding)
+            int maxPlanFromCA = getMaxPlanFromConflictAvoidance(conflictAvoidance);
+            if (conflictRange >= 0)
+                for (int biasTime = saveTime - conflictRange; biasTime < saveTime + conflictRange + 1; biasTime++)
                 {
-                    if (conflictCounts.ContainsKey(agentNum) == false)
-                        conflictCounts[agentNum] = 0;
-                    conflictCounts[agentNum] += 1;
-                    if (conflictTimes.ContainsKey(agentNum) == false)
-                        conflictTimes[agentNum] = new List<int>(4);
-                    if (conflictTimesBias.ContainsKey(agentNum) == false)
-                        conflictTimesBias[agentNum] = new List<int>(4);
-                    if (!conflictTimes[agentNum].Contains(saveTime)  ||
-                        (conflictTimes[agentNum].Contains(saveTime) && !conflictTimesBias[agentNum].Contains(this.time - saveTime)))
+                    this.time = biasTime;
+                    List<int> colliding = this.GetColliding(conflictAvoidance);
+                    foreach (int agentNum in colliding)
                     {
-                        conflictTimes[agentNum].Add(saveTime);
-                        conflictTimesBias[agentNum].Add(this.time - saveTime);
+                        if (conflictCounts.ContainsKey(agentNum) == false)
+                            conflictCounts[agentNum] = 0;
+                        conflictCounts[agentNum] += 1;
+                        if (conflictTimes.ContainsKey(agentNum) == false)
+                            conflictTimes[agentNum] = new List<int>(4);
+                        if (conflictTimesBias.ContainsKey(agentNum) == false)
+                        {
+                            conflictTimesBias[agentNum] = new List<int>(4);
+                        }
+                        if (!conflictTimes[agentNum].Contains(saveTime)  ||
+                            (conflictTimes[agentNum].Contains(saveTime) && !conflictTimesBias[agentNum].Contains(this.time - saveTime)))
+                        {
+                            conflictTimes[agentNum].Add(saveTime);
+                            conflictTimesBias[agentNum].Add(this.time - saveTime);
+                        }
                     }
                 }
-            }
             this.time = saveTime;
+        }
+
+        private int getMaxPlanFromConflictAvoidance(IReadOnlyDictionary<TimedMove, List<int>> conflictAvoidance)
+        {
+            int max = 0;
+            if (conflictAvoidance.Keys == null)
+                return 0;
+            foreach (KeyValuePair<TimedMove, List<int>> t in conflictAvoidance)
+            { 
+                if (max < t.Key.time)
+                    max = t.Key.time;
+            }
+            return max + 1;
         }
 
     }

@@ -57,6 +57,8 @@ namespace CPF_experiment
         /// This field is used to identify an instance when running a set of experiments
         /// </summary>
         public int instanceId;
+
+        public string fileName;
         
         /// <summary>
         /// Enumerates all of the empty spots in the grid. The indices
@@ -247,19 +249,24 @@ namespace CPF_experiment
             var conflictCounts  = new Dictionary<int, int>();
             var conflictTimes   = new Dictionary<int, List<int>>();
             var conflictTimesBias = new Dictionary<int, List<int>>();
+            var conflictProbability = new Dictionary<int, List<double>>();
             IReadOnlyDictionary<TimedMove, List<int>> CAT;
             if (this.parameters.ContainsKey(CBS_LocalConflicts.CAT)) // TODO: Add support for IndependenceDetection's CAT
                 CAT = ((IReadOnlyDictionary<TimedMove, List<int>>)this.parameters[CBS_LocalConflicts.CAT]);
             else
                 CAT = new Dictionary<TimedMove, List<int>>();
 
+            //for(int tempTime = 0 ; tempTime < agentState.)
+
             TimedMove current = agentState.lastMove; // The starting position
             int time = current.time;
-
+            int timeWithoutDelays = 0;
             while (true)
             {
                 moves.AddLast(current);
-
+                if (current.direction != Move.Direction.NO_DIRECTION &&
+                    current.direction != Move.Direction.Wait)
+                    timeWithoutDelays++;
                 // Count conflicts:
                 current.UpdateConflictCounts(CAT, conflictCounts, conflictTimes, conflictTimesBias, conflictRange);
 
@@ -398,6 +405,7 @@ namespace CPF_experiment
 
             // Generate the problem instance
             ProblemInstance instance = new ProblemInstance();
+            instance.fileName = fileName;
             instance.Init(states, grid);
             instance.instanceId = instanceId;
             instance.parameters[ProblemInstance.GRID_NAME_KEY] = gridName;

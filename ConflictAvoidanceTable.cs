@@ -7,7 +7,7 @@ namespace CPF_experiment
 {
     class ConflictAvoidanceTable : IReadOnlyDictionary<TimedMove, List<int>>
     {
-        Dictionary<TimedMove, List<int>> timedMovesToAgentNumList = new Dictionary<TimedMove,List<int>>();
+        public Dictionary<TimedMove, List<int>> timedMovesToAgentNumList = new Dictionary<TimedMove,List<int>>();
         Dictionary<Move, Tuple<int, int>> atGoalWaitsToTimeAndAgentNum = new Dictionary<Move,Tuple<int,int>>(); // No need for a list of agent nums because goals can't collide :)
 
         public void AddPlan(SinglePlan plan)
@@ -175,7 +175,12 @@ namespace CPF_experiment
 
         public IEnumerator<KeyValuePair<TimedMove, List<int>>> GetEnumerator()
         {
-            throw new NotImplementedException(); // Don't know how many waits at the goal to return
+            //throw new NotImplementedException(); // Don't know how many waits at the goal to return
+            foreach (KeyValuePair<TimedMove, List<int>> item in timedMovesToAgentNumList)
+            {
+                yield return item;
+            }
+            
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -189,6 +194,17 @@ namespace CPF_experiment
             {
                 throw new NotImplementedException(); // Don't know how many waits at the goal we contain
             }
+        }
+
+        public int getMaxTime()
+        {
+            int max = 0;
+            foreach (TimedMove tm in timedMovesToAgentNumList.Keys)
+            {
+                if (max < tm.time)
+                    max = tm.time;
+            }
+            return max;
         }
     }
 }

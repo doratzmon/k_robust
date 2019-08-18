@@ -199,5 +199,17 @@ namespace CPF_experiment
                 return this.Data.Sum<IReadOnlyDictionary<K, List<V>>>(dict => dict.Count);
             }
         }
+
+
+       public int getMax()
+       {
+            int max = 0;
+            foreach(TimedMove key in Data)
+            {
+                if (key.time > max)
+                    max = key.time;
+            }
+            return max;
+       }
     }
 }

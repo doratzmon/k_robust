@@ -10,24 +10,26 @@ namespace CPF_experiment
         public byte agentNum {get; protected set;}
         public TimedMove move {get; protected set;}
         public bool queryInstance = false;
+        public int constaintRange = 0;
 
-        public CbsConstraint(int agentNum, int posX, int posY, Move.Direction direction, int timeStep)
+        public CbsConstraint(int agentNum, int posX, int posY, Move.Direction direction, int timeStep, int constraintRange = 0)
         {
-            this.Init(agentNum, posX, posY, direction, timeStep);
+            this.Init(agentNum, posX, posY, direction, timeStep, constraintRange);
         }
 
-        public CbsConstraint(int agentNum, TimedMove move)
+        public CbsConstraint(int agentNum, TimedMove move, int constraintRange = 0)
         {
-            this.Init(agentNum, move);
+            this.Init(agentNum, move, constraintRange);
         }
 
         public CbsConstraint() : this(-1, -1, -1, Move.Direction.NO_DIRECTION, -1) {} // Nonsense values until Init, just allocate move
 
-        public CbsConstraint(CbsConflict conflict, ProblemInstance instance, bool agentA, Run.ConstraintPolicy constraintPolicy = Run.ConstraintPolicy.Single/*bool isRangeConstraint = false*/)
+        public CbsConstraint(CbsConflict conflict, ProblemInstance instance, bool agentA, Run.ConstraintPolicy constraintPolicy = Run.ConstraintPolicy.Single, int constraintRange = 0)
         {
             Move move;
             int agentNum;
             int minTime;
+            this.constaintRange = Math.Abs(conflict.timeStepAgentB - conflict.timeStepAgentA);
             if (constraintPolicy == Run.ConstraintPolicy.Range)
                 minTime = Math.Min(conflict.timeStepAgentA, conflict.timeStepAgentB);
             else if (constraintPolicy == Run.ConstraintPolicy.DoubleRange)
@@ -59,15 +61,16 @@ namespace CPF_experiment
                 this.move.direction = Move.Direction.NO_DIRECTION;
         }
 
-        public void Init(int agentNum, int posX, int posY, Move.Direction direction, int timeStep)
+        public void Init(int agentNum, int posX, int posY, Move.Direction direction, int timeStep, int constraintRange = 0)
         {
-            this.Init(agentNum, new TimedMove(posX, posY, direction, timeStep));
+            this.Init(agentNum, new TimedMove(posX, posY, direction, timeStep), constraintRange);
         }
 
-        public void Init(int agentNum, TimedMove move)
+        public void Init(int agentNum, TimedMove move, int constraintRange = 0)
         {
             this.agentNum = (byte)agentNum;
             this.move = move;
+            this.constaintRange = constraintRange;
         }
 
         public int time
@@ -114,6 +117,7 @@ namespace CPF_experiment
                 int ans = 0;
                 ans += this.move.GetHashCode() * 3;
                 ans += this.agentNum * 5;
+                ans += this.constaintRange * 11;
                 return ans;
             }
         }

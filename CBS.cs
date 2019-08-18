@@ -139,12 +139,10 @@ namespace CPF_experiment
             this.openList = new OpenList(this);
             this.mergeThreshold = mergeThreshold;
             this.conflictRange = conflictRange;
-            //this.rangeConstraint = rangeConstraint;
             this.constraintPolicy = constraintPolicy;
             this.solver = generalSolver;
             this.singleAgentSolver = singleAgentSolver;
             this.doShuffle = doShuffle;
-            //this.doShuffle = doShuffle || useMddHeuristic;
             this.bypassStrategy = bypassStrategy;
             this.doMalte = doMalte;
             this.conflictChoice = conflictChoice;
@@ -223,6 +221,11 @@ namespace CPF_experiment
         }
 
         public Dictionary<int, List<int>> GetConflictTimesBias()
+        {
+            throw new NotImplementedException(); // For now. Also need to take care of generalised goal nodes!
+        }
+
+        public Dictionary<int, List<double>> GetConflictProbability()
         {
             throw new NotImplementedException(); // For now. Also need to take care of generalised goal nodes!
         }
@@ -583,14 +586,16 @@ namespace CPF_experiment
                     this.CleanGlobals();
                     return false;
                 }
-                var currentNode = (CbsNode)openList.Remove();
 
+                //if()
+                var currentNode = (CbsNode)openList.Remove();
                 currentNode.ChooseConflict();
 
                 // A cardinal conflict may have been found, increasing the h of the node.
                 // Check if the node needs to be pushed back into the open list.
                 if (this.openList.Count != 0 &&
-                    currentNode.f > ((CbsNode)this.openList.Peek()).f)
+                    currentNode.f > ((CbsNode)this.openList.Peek()).f &&
+                    this.conflictRange != -1)
                 {
                     if (this.debug)
                         Debug.Print("Pushing back the node into the open list with an increased h.");
@@ -1686,7 +1691,7 @@ namespace CPF_experiment
             //    We're ignoring edge conflicts because they can only happen at the goal when reaching it,
             //    and aren't guaranteed to increase the cost because the goal can still be possibly reached from another edge.
             {
-                if (otherChildExpansionsState == CbsNode.ExpansionState.DEFERRED)
+                if (otherChildExpansionsState == CbsNode.ExpansionState.DEFERRED && conflictRange != -1)
                         throw new Exception("Unexpected: Expansion of both children deffered, but this is a vertex conflict so that means the targets for the two agents are equal, which is illegal");
 
                 if (debug)
@@ -1720,16 +1725,16 @@ namespace CPF_experiment
                 else
                     node.agentBExpansion = CbsNode.ExpansionState.EXPANDED;
                 
-                var newConstraint = new CbsConstraint(conflict, instance, doLeftChild, constraintPolicy);
+                var newConstraint = new CbsConstraint(conflict, instance, doLeftChild, constraintPolicy, conflictRange);
                 CbsNode child = new CbsNode(node, newConstraint, conflictingAgentIndex);
-
+                int nnn = child.GetHashCode();
                 if (this.doMalte && doLeftChild == false)
                 {
                     // Add the case where both agents shouldn't be at the conflict point to the _left_ child
                     // by forcing the first agent in the _right_ child to _always_ be at the conflict point.
                     // Notice that vertex conflicts create must constraint with NO_DIRECTION and edge conflicts
                     // don't, as necessary.
-                    var newMustConstraint = new CbsConstraint(conflict, instance, true, constraintPolicy);
+                    var newMustConstraint = new CbsConstraint(conflict, instance, true, constraintPolicy, conflictRange);
                     child.SetMustConstraint(newMustConstraint);
                 }
 
@@ -1854,7 +1859,7 @@ namespace CPF_experiment
                                   bool doShuffle = false, BypassStrategy bypassStrategy = BypassStrategy.NONE, bool doMalte = false,
                                   ConflictChoice conflictChoice = ConflictChoice.FIRST,
                                   bool justbreakForConflicts = false, bool useMddHeuristic = false,
-                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, Run.ConstraintPolicy constraintPolicy = Run.ConstraintPolicy.Single/*bool rangeConstraint = false*/)
+                                  int lookaheadMaxExpansions = int.MaxValue, bool mergeCausesRestart = false, int conflictRange = 0, Run.ConstraintPolicy constraintPolicy = Run.ConstraintPolicy.Single)
             : base(singleAgentSolver, generalSolver, mergeThreshold, doShuffle, bypassStrategy, doMalte, conflictChoice,
                    justbreakForConflicts, useMddHeuristic, lookaheadMaxExpansions, mergeCausesRestart, conflictRange, constraintPolicy)
         {
