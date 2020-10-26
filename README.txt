@@ -1,4 +1,4 @@
-k-Robust CBS Algorighm with A* as a low level solver
+k-Robust CBS Algorithm with A* as a low level solver
 ---------------------------------------------------
 
 
